@@ -1,16 +1,13 @@
 <template>
-  <div class="login">
-      LoginPage
-  </div>
+	<v-content>
+		<v-container class="fill-height" fluid>
+            Login Page
+		</v-container>
+	</v-content>
 </template>
 
 <script>
 export default {
-  name: "login"
+	name: "login"
 };
 </script>
-<style lang="scss">
-.login {
-    // 
-}
-</style>

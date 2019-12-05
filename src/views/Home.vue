@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    Home Page
+    Navbar
+    Roouter View
   </div>
 </template>
 
