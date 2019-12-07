@@ -10,7 +10,7 @@
         </v-btn>
       </template>
       <v-list>
-        <v-list-item @click="logout">
+        <v-list-item @click="$emit('logout', true)">
           <v-list-item-title>Logout</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -22,9 +22,7 @@ export default {
   name: "HomeNavbar",
   props: ["appName"],
   methods: {
-    logout() {
-      //
-    }
+    //
   }
 };
 </script>

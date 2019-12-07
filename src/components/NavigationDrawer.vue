@@ -16,7 +16,7 @@
         :key="item.title"
         class="my-3"
         link
-        :to="item.route"
+        :to="{ name: item.route }"
       >
         <v-list-item-icon>
           <v-icon>{{ item.icon }}</v-icon>
