@@ -1,5 +1,5 @@
 import axios from "axios";
-import Auth from "../auth/Auth.js";
+import Auth from "@/packages/auth";
 import config from "@/config.js";
 
 let axiosInstance = axios.create({
