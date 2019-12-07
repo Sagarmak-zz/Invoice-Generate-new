@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Auth from "@/packages/auth";
 import Login from "../views/Login.vue";
 import Home from "../views/Home.vue";
 import Dashboard from "../views/Home/Dashboard.vue";
@@ -16,47 +17,65 @@ const routes = [
   {
     path: "/",
     name: "login",
-    component: Login
+    component: Login,
+    meta: { requiresAuth: false },
+    beforeEnter: (to, from, next) => {
+      if (Auth.isAuthenticated()) {
+        next({
+          name: "home.dashboard"
+        });
+      } else {
+        next();
+      }
+    }
   },
   {
     path: "/home",
     component: Home,
+    meta: { requiresAuth: true },
     children: [
       {
         path: "/",
         name: "home.dashboard",
-        component: Dashboard
+        component: Dashboard,
+        meta: { requiresAuth: true }
       },
       {
         path: "/bill",
         name: "home.bill",
-        component: Bill
+        component: Bill,
+        meta: { requiresAuth: true }
       },
       {
         path: "/chalan",
         name: "home.chalan",
-        component: Chalan
+        component: Chalan,
+        meta: { requiresAuth: true }
       },
       {
         path: "/products",
         name: "home.products",
-        component: Products
+        component: Products,
+        meta: { requiresAuth: true }
       },
       {
         path: "/history",
         name: "home.history",
-        component: History
+        component: History,
+        meta: { requiresAuth: true }
       },
       {
         path: "/reports",
         name: "home.reports",
-        component: Reports
+        component: Reports,
+        meta: { requiresAuth: true }
       },
       {
         path: "/settings",
         name: "home.settings",
-        component: Settings
-      },
+        component: Settings,
+        meta: { requiresAuth: true }
+      }
     ]
   }
 ];
@@ -65,6 +84,20 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!Auth.isAuthenticated()) {
+      next({
+        name: "login"
+      });
+    } else {
+      next(); // make sure to always call next()!
+    }
+  } else {
+    next(); // make sure to always call next()!
+  }
 });
 
 export default router;
