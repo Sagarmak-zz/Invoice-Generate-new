@@ -6,10 +6,6 @@
 			</v-list-item-avatar>
 
 			<v-list-item-title>John Leider</v-list-item-title>
-
-			<v-btn icon @click.stop="log">
-				<v-icon>fas fa-chevron-left</v-icon>
-			</v-btn>
 		</v-list-item>
 
 		<v-divider></v-divider>
