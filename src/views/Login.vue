@@ -5,12 +5,13 @@
         <v-col cols="12" sm="8" md="4">
           <v-card class="elevation-12">
             <v-toolbar color="primary" dark flat>
-              <v-toolbar-title>Login form</v-toolbar-title>
+              <v-toolbar-title>{{ appTitle }} Billing System</v-toolbar-title>
               <v-spacer />
             </v-toolbar>
             <v-card-text>
               <v-form>
                 <v-text-field
+                  v-model="email"
                   label="Login"
                   name="login"
                   prepend-icon="fas fa-user-shield"
@@ -19,11 +20,11 @@
 
                 <v-text-field
                   id="password"
+                  v-model="password"
                   label="Password"
                   name="password"
                   prepend-icon="fas fa-lock"
                   type="password"
-                  @keyup.enter="login"
                 />
               </v-form>
             </v-card-text>
@@ -39,14 +40,39 @@
 </template>
 
 <script>
-import Auth from "@/packages/auth";
+import { LOGIN } from "@/store/actionTypes";
+import config from "@/config.js";
 
 export default {
   name: "Login",
+  data() {
+    return {
+      email: "",
+      password: ""
+    };
+  },
+  computed: {
+    appTitle() {
+      return config.appTitle();
+    }
+  },
   methods: {
     login() {
-      Auth.setToken("123456");
-      this.$router.push({ name: "home.dashboard" });
+      const postData = {
+        email: this.email,
+        password: this.password
+      };
+      this.$store
+        .dispatch(LOGIN, postData)
+        .then(response => {
+          if (response) {
+            this.$router.push({ name: "home.dashboard" });
+          }
+        })
+        .catch(err => {
+          // show error on snackbar
+          console.log(err);
+        });
     }
   }
 };
