@@ -1,12 +1,24 @@
 <template>
-  <v-app id="app">
+  <div>
+    <Snackbar />
+    <v-app id="app">
       <router-view />
-  </v-app>
+    </v-app>
+  </div>
 </template>
+<script>
+import Snackbar from "@/components/Snackbar.vue";
 
+export default {
+  name: "App",
+  components: {
+    Snackbar
+  }
+};
+</script>
 <style lang="scss">
 #app {
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   // -webkit-font-smoothing: antialiased;
   // -moz-osx-font-smoothing: grayscale;
   // text-align: center;
