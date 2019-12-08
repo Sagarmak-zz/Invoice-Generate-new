@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <v-snackbar v-model="status" top>
-      <span>
-        {{ getSnackbarData.text }}
-      </span>
+  <div class="snackbar">
+    <v-snackbar v-model="status" :color="getSnackbarData.color" top>
+      <span> {{ getSnackbarData.text }} </span>
       <v-icon v-if="getSnackbarData.icon" flat>
         {{ getSnackbarData.icon }}
       </v-icon>
@@ -21,10 +19,18 @@ export default {
       return this.$store.getters.snackbar;
     },
     getSnackbarData() {
+      if (!this.snackbar) {
+        return {};
+      }
+
+      this.status = true;
+
       return {
-        status: this.snackbar.status || true,
         timeout: this.snackbar.timeout || 4000,
-        color: this.snackbar.color || "success",
+        color:
+          this.snackbar && this.snackbar.color
+            ? this.snackbar.color
+            : "success",
         icon: this.snackbar.icon || "",
         text: this.snackbar.text || ""
       };
@@ -32,3 +38,17 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+.snackbar {
+  font-family: "Open Sans";
+
+  .v-snack__content {
+    display: text;
+    align-items: center;
+    justify-content: center;
+  }
+  .v-icon {
+    margin-left: 0.5rem;
+  }
+}
+</style>
