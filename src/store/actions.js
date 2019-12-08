@@ -5,7 +5,6 @@ import Auth from "@/packages/auth";
 
 export default {
   [AT.LOGIN]: (context, data) => {
-    // return Promise
     return api
       .login(data)
       .then(response => {
