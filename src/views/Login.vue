@@ -13,6 +13,7 @@
                 <v-text-field
                   v-model="email"
                   label="Login"
+                  :loading="isLoading"
                   name="login"
                   prepend-icon="fas fa-user-shield"
                   type="text"
@@ -22,6 +23,7 @@
                   id="password"
                   v-model="password"
                   label="Password"
+                  :loading="isLoading"
                   name="password"
                   prepend-icon="fas fa-lock"
                   type="password"
@@ -30,7 +32,9 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer />
-              <v-btn color="primary" @click="login">Login</v-btn>
+              <v-btn :loading="isLoading" color="primary" @click="login"
+                >Login</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-col>
@@ -48,7 +52,8 @@ export default {
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      isLoading: false
     };
   },
   computed: {
@@ -58,16 +63,21 @@ export default {
   },
   methods: {
     login() {
+      this.isLoading = true;
+
       const postData = {
         email: this.email,
         password: this.password
       };
 
-      this.$store.dispatch(LOGIN, postData).then(response => {
-        if (response) {
-          this.$router.push({ name: "home.dashboard" });
-        }
-      });
+      this.$store
+        .dispatch(LOGIN, postData)
+        .then(response => {
+          if (response) {
+            this.$router.push({ name: "home.dashboard" });
+          }
+        })
+        .finally(() => (this.isLoading = false));
     }
   }
 };
