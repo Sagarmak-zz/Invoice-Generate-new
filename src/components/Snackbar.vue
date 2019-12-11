@@ -1,6 +1,11 @@
 <template>
   <div class="snackbar">
-    <v-snackbar v-model="status" :color="getSnackbarData.color" top>
+    <v-snackbar
+      v-model="status"
+      :color="getSnackbarData.color"
+      :timeout="getSnackbarData.timeout"
+      top
+    >
       <span> {{ getSnackbarData.text }} </span>
       <v-icon v-if="getSnackbarData.icon" flat>
         {{ getSnackbarData.icon }}

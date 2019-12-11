@@ -14,6 +14,7 @@
       <v-list-item
         v-for="item in items"
         :key="item.title"
+        color="primary"
         class="my-3"
         link
         :to="{ name: item.route }"

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Snackbar />
     <v-app id="app">
+      <Snackbar />
       <router-view />
     </v-app>
   </div>

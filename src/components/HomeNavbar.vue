@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="deep-purple accent-4" dense dark class="home-navbar">
+  <v-app-bar app color="primary" dense dark class="home-navbar">
     <v-toolbar-title>{{ appName }}</v-toolbar-title>
     <v-spacer></v-spacer>
 
