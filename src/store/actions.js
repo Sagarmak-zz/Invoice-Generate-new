@@ -12,7 +12,7 @@ export default {
         return response;
       })
       .catch(err => {
-        context.dispatch(SNACKBAR, {
+        context.dispatch(AT.SNACKBAR, {
           color: "error",
           text: "Error while Logging in"
         });
