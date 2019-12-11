@@ -62,17 +62,12 @@ export default {
         email: this.email,
         password: this.password
       };
-      this.$store
-        .dispatch(LOGIN, postData)
-        .then(response => {
-          if (response) {
-            this.$router.push({ name: "home.dashboard" });
-          }
-        })
-        .catch(err => {
-          // show error on snackbar
-          console.log(err);
-        });
+
+      this.$store.dispatch(LOGIN, postData).then(response => {
+        if (response) {
+          this.$router.push({ name: "home.dashboard" });
+        }
+      });
     }
   }
 };

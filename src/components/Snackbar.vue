@@ -19,7 +19,7 @@ export default {
       return this.$store.getters.snackbar;
     },
     getSnackbarData() {
-      if (!this.snackbar) {
+      if (!this.snackbar || !this.snackbar.status) {
         return {};
       }
 

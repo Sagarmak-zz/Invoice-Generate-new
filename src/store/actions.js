@@ -9,9 +9,14 @@ export default {
       .login(data)
       .then(response => {
         Auth.setToken(response.token);
-        return true;
+        return response;
       })
-      .catch(() => false);
+      .catch(err => {
+        context.dispatch(SNACKBAR, {
+          color: "error",
+          text: "Error while Logging in"
+        });
+      });
   },
   [AT.SNACKBAR]: (context, data) => {
     context.commit(MT.SET_SNACKBAR, {
