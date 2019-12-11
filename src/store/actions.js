@@ -12,9 +12,15 @@ export default {
         return response;
       })
       .catch(err => {
+        const errorMessage =
+          (err &&
+            err.response &&
+            err.response.data &&
+            err.response.data.message) ||
+          "Error while Logging in";
         context.dispatch(AT.SNACKBAR, {
-          color: "error",
-          text: "Error while Logging in"
+          color: "red",
+          text: errorMessage
         });
       });
   },
