@@ -9,26 +9,25 @@
               <v-spacer />
             </v-toolbar>
             <v-card-text>
-              <v-form>
-                <v-text-field
-                  v-model="email"
-                  label="Login"
-                  :loading="isLoading"
-                  name="login"
-                  prepend-icon="fas fa-user-shield"
-                  type="text"
-                />
+              <v-text-field
+                v-model="email"
+                label="Login"
+                :loading="isLoading"
+                name="login"
+                prepend-icon="fas fa-user-shield"
+                type="text"
+              />
 
-                <v-text-field
-                  id="password"
-                  v-model="password"
-                  label="Password"
-                  :loading="isLoading"
-                  name="password"
-                  prepend-icon="fas fa-lock"
-                  type="password"
-                />
-              </v-form>
+              <v-text-field
+                id="password"
+                v-model="password"
+                label="Password"
+                :loading="isLoading"
+                name="password"
+                prepend-icon="fas fa-lock"
+                type="password"
+                @keyup.enter="login"
+              />
             </v-card-text>
             <v-card-actions>
               <v-spacer />
