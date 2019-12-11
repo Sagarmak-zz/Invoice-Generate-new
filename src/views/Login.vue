@@ -11,9 +11,9 @@
             <v-card-text>
               <v-text-field
                 v-model="email"
-                label="Login"
+                label="Email"
                 :loading="isLoading"
-                name="login"
+                name="email"
                 prepend-icon="fas fa-user-shield"
                 type="text"
               />
