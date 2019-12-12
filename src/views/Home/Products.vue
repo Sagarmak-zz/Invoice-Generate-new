@@ -5,6 +5,11 @@
 </template>
 <script>
 export default {
-  name: "Products"
+  name: "Products",
+  computed: {
+    products() {
+      return this.$store.getters.products;
+    }
+  }
 };
 </script>
