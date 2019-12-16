@@ -13,6 +13,15 @@
 <script>
 export default {
   name: "InfoCard",
-  props: ["title", "subtitle"]
+  props: {
+    title: {
+      default: "",
+      type: String
+    },
+    subtitle: {
+      default: "",
+      type: String
+    }
+  }
 };
 </script>
