@@ -20,7 +20,12 @@
 <script>
 export default {
   name: "HomeNavbar",
-  props: ["appName"],
+  props: {
+    appName: {
+      default: "",
+      type: String
+    }
+  },
   methods: {
     //
   }

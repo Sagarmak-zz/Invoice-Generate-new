@@ -33,7 +33,12 @@
 <script>
 export default {
   name: "NavigationDrawer",
-  props: ["items"],
+  props: {
+    items: {
+      default: () => [],
+      type: Array
+    }
+  },
   data() {
     return {
       //
