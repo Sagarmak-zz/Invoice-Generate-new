@@ -5,6 +5,11 @@
 </template>
 <script>
 export default {
-  name: "Chalan"
+  name: "Chalan",
+  computed: {
+    challans() {
+      return this.$store.getters.challans;
+    }
+  }
 };
 </script>

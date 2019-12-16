@@ -5,7 +5,7 @@
     <HomeNavbar :app-name="appName" @logout="logout" />
 
     <v-content>
-      <v-container>
+      <v-container fluid>
         <router-view />
       </v-container>
     </v-content>
@@ -17,6 +17,7 @@ import NavigationDrawer from "@/components/NavigationDrawer.vue";
 import HomeNavbar from "@/components/HomeNavbar.vue";
 import Auth from "@/packages/auth";
 import config from "@/config.js";
+import * as AT from "@/store/actionTypes";
 
 export default {
   name: "Home",
@@ -54,7 +55,19 @@ export default {
       return config.appTitle();
     }
   },
+  created() {
+    this.getAllDetails();
+  },
   methods: {
+    getAllDetails() {
+      this.$store.dispatch(AT.USER_DETAILS);
+      this.$store.dispatch(AT.GET_CUSTOMERS);
+      this.$store.dispatch(AT.LIST_CUSTOMERS);
+      this.$store.dispatch(AT.GET_PRODUCTS);
+      this.$store.dispatch(AT.GET_BILLS);
+      this.$store.dispatch(AT.GET_CHALLANS);
+      this.$store.dispatch(AT.GET_STATES);
+    },
     logout() {
       Auth.destroyToken();
       this.$router.push({ name: "login" });

@@ -1,6 +1,6 @@
 <template>
   <v-app-bar app color="primary" dense dark class="home-navbar">
-    <v-toolbar-title>{{ appName }}</v-toolbar-title>
+    <v-toolbar-title>{{ appName }} Billing System</v-toolbar-title>
     <v-spacer></v-spacer>
 
     <v-menu offset-y>

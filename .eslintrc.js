@@ -3,12 +3,7 @@ module.exports = {
   env: {
     node: true
   },
-  // extends: ["plugin:vue/essential", "@vue/prettier"],
-  extends: [
-    "plugin:vue/recommended",
-    "prettier/vue",
-    "plugin:prettier/recommended"
-  ],
+  extends: ["plugin:vue/recommended", "prettier/vue", "plugin:prettier/recommended"],
   rules: {
     "vue/no-side-effects-in-computed-properties": "off",
     "vue/component-name-in-template-casing": ["error", "PascalCase"],

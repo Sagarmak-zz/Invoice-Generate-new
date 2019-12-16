@@ -1,4 +1,10 @@
 export default {
+  snackbar: {},
   user: {},
-  snackbar: {}
+  customers: [],
+  listCustomers: [],
+  products: [],
+  bills: [],
+  challans: [],
+  states: []
 };
