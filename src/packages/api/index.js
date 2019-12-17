@@ -11,7 +11,7 @@ export default {
   },
 
   getCustomers() {
-    return HTTP.get(EP.GET_CUSTOMERS).then(({ data }) => data);
+    return HTTP.get(EP.GET_CUSTOMERS).then(({ data }) => data.Firms);
   },
 
   getBills() {

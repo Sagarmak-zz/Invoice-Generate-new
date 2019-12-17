@@ -1,11 +1,13 @@
 export default {
   snackbar: {},
   user: {},
-  customers: [],
   bills: [],
   challans: [],
   states: [],
 
+  // customers
+  gettingCustomers: false,
+  customers: [],
   // products
   products: [],
   gettingProducts: false
