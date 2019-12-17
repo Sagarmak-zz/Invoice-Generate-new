@@ -3,7 +3,14 @@
     <v-row>
       <v-col>
         <v-card>
-          <v-data-table :headers="headers" :items="desserts" class="elevation-1" :search="search" hide-default-footer>
+          <v-data-table
+            :headers="headers"
+            :items="products"
+            class="elevation-1"
+            :search="search"
+            :loading="gettingProducts"
+            hide-default-footer
+          >
             <template v-slot:top>
               <v-toolbar flat color="white">
                 <v-toolbar-title>Products</v-toolbar-title>
@@ -16,11 +23,11 @@
                 <v-spacer></v-spacer>
                 <v-dialog v-model="dialog" max-width="500px">
                   <template v-slot:activator="{ on }">
-                    <v-btn color="primary" dark class="mb-2" v-on="on">New Product</v-btn>
+                    <v-btn color="primary" dark class="mb-2" v-on="on" @click="addProductAction">New Product</v-btn>
                   </template>
                   <v-card>
                     <v-card-title>
-                      <span class="headline">Add a Product</span>
+                      <span class="headline">{{ dialogTitle }}</span>
                     </v-card-title>
 
                     <v-card-text>
@@ -43,8 +50,10 @@
 
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" text @click="dialog = false">Cancel</v-btn>
-                      <v-btn color="blue darken-1" text>Save</v-btn>
+                      <v-btn color="blue darken-1" text @click="resetDialogForm">Cancel</v-btn>
+                      <v-btn color="blue darken-1" text @click="dialogAction == 'Add' ? addProduct() : editProduct()"
+                        >Save</v-btn
+                      >
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
@@ -52,11 +61,8 @@
             </template>
 
             <template v-slot:item.action="{ item }">
-              <v-icon small class="mr-2" @click="editProduct">
+              <v-icon small class="mr-2" @click="openEditDialog(item)">
                 fas fa-edit
-              </v-icon>
-              <v-icon small @click="deleteProduct">
-                fas fa-trash
               </v-icon>
             </template>
           </v-data-table>
@@ -66,42 +72,95 @@
   </div>
 </template>
 <script>
+import * as AT from "@/store/actionTypes";
+
 export default {
   name: "Products",
   data() {
     return {
       dialog: false,
+      dialogAction: "",
+      dialogTitle: "",
       headers: [
-        { text: "Name", value: "name" },
-        { text: "HSN Code", value: "calories" },
-        { text: "Rate", value: "fat" },
+        { text: "Name", value: "product_name" },
+        { text: "HSN Code", value: "hsn_code" },
+        { text: "Rate", value: "product_price" },
         { text: "Actions", value: "action", sortable: false }
-      ],
-      desserts: [
-        {
-          name: "Frozen Yogurt",
-          calories: 159,
-          fat: 6.0,
-          carbs: 24
-        }
       ],
       productName: "",
       productHSNCode: "",
       productRate: null,
+      productId: null,
       search: ""
     };
   },
   computed: {
+    gettingProducts() {
+      return this.$store.getters.gettingProducts;
+    },
     products() {
       return this.$store.getters.products;
     }
   },
   methods: {
-    editProduct() {
-      //
+    addProductAction() {
+      this.dialogTitle = "Add Product";
+      this.dialogAction = "Add";
     },
-    deleteProduct() {
-      //
+    addProduct() {
+      const postData = {
+        product_name: this.productName,
+        hsn_code: this.productHSNCode,
+        product_price: this.productRate
+      };
+
+      this.$store
+        .dispatch(AT.ADD_PRODUCT, postData)
+        .then(res => {
+          this.$store.dispatch(AT.SNACKBAR, {
+            text: "Product Added Successfully"
+          });
+        })
+        .catch(err => console.log(err))
+        .finally(() => {
+          this.resetDialogForm();
+        });
+    },
+    openEditDialog(item) {
+      this.dialogTitle = "Edit Product";
+      this.dialogAction = "Edit";
+      (this.productName = item.product_name),
+        (this.productHSNCode = item.hsn_code),
+        (this.productRate = item.product_price),
+        (this.productId = item.id);
+      this.dialog = true;
+    },
+    editProduct() {
+      const postData = {
+        product_name: this.productName,
+        hsn_code: this.productHSNCode,
+        product_price: this.productRate,
+        productId: this.productId
+      };
+
+      this.$store
+        .dispatch(AT.EDIT_PRODUCT, postData)
+        .then(res => {
+          this.$store.dispatch(AT.SNACKBAR, {
+            text: "Product Updated Successfully"
+          });
+        })
+        .catch(err => console.log(err))
+        .finally(() => {
+          this.resetDialogForm();
+        });
+    },
+    resetDialogForm() {
+      this.resetForm();
+      this.dialog = false;
+    },
+    resetForm() {
+      (this.productName = ""), (this.productHSNCode = ""), (this.productRate = null);
     }
   }
 };

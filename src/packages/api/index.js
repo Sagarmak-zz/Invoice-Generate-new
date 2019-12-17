@@ -18,10 +18,6 @@ export default {
     return HTTP.get(EP.LIST_CUSTOMERS).then(({ data }) => data);
   },
 
-  getProducts() {
-    return HTTP.get(EP.GET_PRODUCTS).then(({ data }) => data);
-  },
-
   getBills() {
     return HTTP.get(EP.GET_BILLS).then(({ data }) => data);
   },
@@ -32,5 +28,16 @@ export default {
 
   getStates() {
     return HTTP.get(EP.GET_STATES).then(({ data }) => data);
+  },
+
+  // products
+  getProducts() {
+    return HTTP.get(EP.PRODUCTS()).then(({ data }) => data.products);
+  },
+  addProduct(data) {
+    return HTTP.post(EP.PRODUCTS(), { ...data }).then(({ data }) => data);
+  },
+  editProduct(data) {
+    return HTTP.patch(EP.PRODUCTS(data.productId), { ...data }).then(({ data }) => data);
   }
 };

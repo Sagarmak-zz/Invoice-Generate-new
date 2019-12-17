@@ -3,8 +3,11 @@ export default {
   user: {},
   customers: [],
   listCustomers: [],
-  products: [],
   bills: [],
   challans: [],
-  states: []
+  states: [],
+
+  // products
+  products: [],
+  gettingProducts: false
 };
