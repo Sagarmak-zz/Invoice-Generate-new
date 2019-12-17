@@ -117,6 +117,7 @@ export default {
       this.$store
         .dispatch(AT.ADD_PRODUCT, postData)
         .then(res => {
+          this.$store.dispatch(AT.GET_PRODUCTS);
           this.$store.dispatch(AT.SNACKBAR, {
             text: "Product Added Successfully"
           });
@@ -146,6 +147,7 @@ export default {
       this.$store
         .dispatch(AT.EDIT_PRODUCT, postData)
         .then(res => {
+          this.$store.dispatch(AT.GET_PRODUCTS);
           this.$store.dispatch(AT.SNACKBAR, {
             text: "Product Updated Successfully"
           });
