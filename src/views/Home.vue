@@ -35,6 +35,7 @@ export default {
         },
         { title: "Bill", icon: "fas fa-file-invoice", route: "home.bill" },
         { title: "Chalan", icon: "fas fa-receipt", route: "home.chalan" },
+        { title: "Customers", icon: "fas fa-user-alt", route: "home.customers" },
         {
           title: "Products",
           icon: "fas fa-file-powerpoint",
@@ -62,7 +63,6 @@ export default {
     getAllDetails() {
       this.$store.dispatch(AT.USER_DETAILS);
       this.$store.dispatch(AT.GET_CUSTOMERS);
-      this.$store.dispatch(AT.LIST_CUSTOMERS);
       this.$store.dispatch(AT.GET_PRODUCTS);
       this.$store.dispatch(AT.GET_BILLS);
       this.$store.dispatch(AT.GET_CHALLANS);
