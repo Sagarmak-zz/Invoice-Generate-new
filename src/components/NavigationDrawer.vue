@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app expand-on-hover permanent>
+  <v-navigation-drawer app clipped expand-on-hover>
     <v-list-item>
       <v-list-item-avatar>
         <v-icon>fas fa-user-circle</v-icon>

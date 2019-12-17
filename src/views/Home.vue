@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <NavigationDrawer :items="items" />
-
     <HomeNavbar :app-name="appName" @logout="logout" />
+
+    <NavigationDrawer :items="items" />
 
     <v-content>
       <v-container fluid>
