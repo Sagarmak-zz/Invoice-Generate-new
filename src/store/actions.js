@@ -40,10 +40,6 @@ export default {
     return api.listCustomers().then(response => context.commit(MT.SET_LIST_CUSTOMERS, response));
   },
 
-  [AT.GET_PRODUCTS]: context => {
-    return api.getProducts().then(response => context.commit(MT.SET_PRODUCTS, response));
-  },
-
   [AT.GET_BILLS]: context => {
     return api.getBills().then(response => context.commit(MT.SET_BILLS, response));
   },
@@ -54,5 +50,17 @@ export default {
 
   [AT.GET_STATES]: context => {
     return api.getStates().then(response => context.commit(MT.SET_STATES, response));
-  }
+  },
+
+  // products
+  [AT.GETTING_PRODUCTS]: (context, value) => context.commit(MT.SET_GETTING_PRODUCTS, value),
+  [AT.GET_PRODUCTS]: context => {
+    context.dispatch(AT.GETTING_PRODUCTS, true);
+    return api
+      .getProducts()
+      .then(response => context.commit(MT.SET_PRODUCTS, response))
+      .finally(() => context.dispatch(AT.GETTING_PRODUCTS, false));
+  },
+  [AT.ADD_PRODUCT]: (context, data) => api.addProduct(data).then(response => response),
+  [AT.EDIT_PRODUCT]: (context, data) => api.editProduct(data).then(response => response)
 };
