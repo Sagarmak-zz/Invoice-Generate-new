@@ -1,7 +1,6 @@
 export const LOGIN = "/login";
 export const USER_DETAILS = "/userdetails";
 export const GET_CUSTOMERS = "/customers";
-export const LIST_CUSTOMERS = "/listCustomer";
 export const PRODUCTS = id => {
   if (id) {
     return `/products/${id}`;

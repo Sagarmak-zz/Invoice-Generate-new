@@ -2,7 +2,6 @@ export const SET_SNACKBAR = "SET_SNACKBAR";
 
 export const SET_USER = "SET_USER";
 export const SET_CUSTOMERS = "SET_CUSTOMERS";
-export const SET_LIST_CUSTOMERS = "SET_LIST_CUSTOMERS";
 export const SET_BILLS = "SET_BILLS";
 export const SET_CHALLANS = "SET_CHALLANS";
 export const SET_STATES = "SET_STATES";

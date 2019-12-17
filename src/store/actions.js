@@ -36,10 +36,6 @@ export default {
     return api.getCustomers().then(response => context.commit(MT.SET_CUSTOMERS, response));
   },
 
-  [AT.LIST_CUSTOMERS]: context => {
-    return api.listCustomers().then(response => context.commit(MT.SET_LIST_CUSTOMERS, response));
-  },
-
   [AT.GET_BILLS]: context => {
     return api.getBills().then(response => context.commit(MT.SET_BILLS, response));
   },
