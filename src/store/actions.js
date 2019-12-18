@@ -53,6 +53,8 @@ export default {
       .then(response => context.commit(MT.SET_CUSTOMERS, response))
       .finally(() => context.dispatch(AT.GETTING_CUSTOMERS, false));
   },
+  [AT.ADD_CUSTOMER]: (context, data) => api.addCustomer(data).then(response => response),
+  [AT.EDIT_CUSTOMER]: (context, data) => api.editCustomer(data).then(response => response),
 
   // products
   [AT.GETTING_PRODUCTS]: (context, value) => context.commit(MT.SET_GETTING_PRODUCTS, value),

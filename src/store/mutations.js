@@ -9,10 +9,7 @@ export default {
   [MT.SET_STATES]: (state, data) => (state.states = data),
 
   // custoemrs
-  [MT.SET_GETTING_CUSTOMERS]: (state, data) => {
-    console.log(data);
-    state.gettingCustomers = data;
-  },
+  [MT.SET_GETTING_CUSTOMERS]: (state, data) => (state.gettingCustomers = data),
   [MT.SET_CUSTOMERS]: (state, data) => (state.customers = data),
 
   // products

@@ -10,10 +10,6 @@ export default {
     return HTTP.get(EP.USER_DETAILS).then(({ data }) => data);
   },
 
-  getCustomers() {
-    return HTTP.get(EP.GET_CUSTOMERS).then(({ data }) => data.Firms);
-  },
-
   getBills() {
     return HTTP.get(EP.GET_BILLS).then(({ data }) => data);
   },
@@ -24,6 +20,17 @@ export default {
 
   getStates() {
     return HTTP.get(EP.GET_STATES).then(({ data }) => data);
+  },
+
+  // customers
+  getCustomers() {
+    return HTTP.get(EP.CUSTOMERS).then(({ data }) => data.Firms);
+  },
+  addCustomer(data) {
+    return HTTP.post(EP.CUSTOMERS, { ...data }).then(({ data }) => data);
+  },
+  editCustomer(data) {
+    return HTTP.patch(EP.CUSTOMERS, { ...data }).then(({ data }) => data);
   },
 
   // products
