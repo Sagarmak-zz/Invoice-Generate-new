@@ -1,7 +1,6 @@
 export const SNACKBAR = "SNACKBAR";
 
 export const LOGIN = "LOGIN";
-export const USER_DETAILS = "USER_DETAILS";
 export const GET_BILLS = "GET_BILLS";
 export const GET_CHALLANS = "GET_CHALLANS";
 
@@ -23,4 +22,6 @@ export const GET_STATES = "GET_STATES";
 export const ADD_STATE = "ADD_STATE";
 export const EDIT_STATE = "EDIT_STATE";
 
+export const USER_DETAILS = "USER_DETAILS";
+export const UPDATE_USER_DETAILS = "UPDATE_USER_DETAILS";
 export const ADD_ADMIN_USER = "ADD_ADMIN_USER";

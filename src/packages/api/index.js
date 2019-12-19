@@ -6,10 +6,6 @@ export default {
     return HTTP.post(EP.LOGIN, { ...data }).then(({ data }) => data);
   },
 
-  userDetails() {
-    return HTTP.get(EP.USER_DETAILS).then(({ data }) => data);
-  },
-
   getBills() {
     return HTTP.get(EP.GET_BILLS).then(({ data }) => data);
   },
@@ -51,7 +47,14 @@ export default {
     return HTTP.patch(EP.STATES(data.stateCode), { ...data }).then(({ data }) => data);
   },
 
+  // userDetails
+  getUserDetails() {
+    return HTTP.get(EP.USER_DETAILS()).then(({ data }) => data);
+  },
+  editUserDetails(data) {
+    return HTTP.patch(EP.USER_DETAILS(data.id), { ...data }).then(({ data }) => data);
+  },
   addAdminUser(data) {
-    return HTTP.post(EP.USER_DETAILS, { ...data }).then(({ data }) => data);
+    return HTTP.post(EP.USER_DETAILS(), { ...data }).then(({ data }) => data);
   }
 };

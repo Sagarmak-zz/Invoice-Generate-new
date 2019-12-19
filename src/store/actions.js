@@ -28,10 +28,6 @@ export default {
       });
   },
 
-  [AT.USER_DETAILS]: context => {
-    return api.userDetails().then(response => context.commit(MT.SET_USER, response));
-  },
-
   [AT.GET_BILLS]: context => {
     return api.getBills().then(response => context.commit(MT.SET_BILLS, response));
   },
@@ -76,5 +72,10 @@ export default {
   [AT.ADD_STATE]: (context, data) => api.addState(data).then(response => response),
   [AT.EDIT_STATE]: (context, data) => api.editState(data).then(response => response),
 
+  // settings
+  [AT.USER_DETAILS]: context => {
+    return api.getUserDetails().then(response => context.commit(MT.SET_USER, response));
+  },
+  [AT.UPDATE_USER_DETAILS]: (context, data) => api.editUserDetails(data).then(response => response),
   [AT.ADD_ADMIN_USER]: (context, data) => api.addAdminUser(data).then(response => response)
 };
