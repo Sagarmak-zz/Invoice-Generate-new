@@ -8,25 +8,35 @@
         <v-card-text>
           <v-row>
             <v-col cols="4">
-              <TextField v-model="adminName" rules="required" label="Admin Name" />
+              <TextField v-model="adminName" rules="required" :loading="isUserDetailsFormLoading" label="Admin Name" />
             </v-col>
             <v-col cols="4">
-              <TextField v-model="firmName" rules="required" label="Firm Name" />
+              <TextField v-model="firmName" rules="required" :loading="isUserDetailsFormLoading" label="Firm Name" />
             </v-col>
             <v-col cols="4">
-              <TextField v-model="gstNumber" rules="required" label="GST Number" />
+              <TextField v-model="gstNumber" rules="required" :loading="isUserDetailsFormLoading" label="GST Number" />
             </v-col>
             <v-col cols="4">
-              <TextField v-model="email" rules="required" label="Email" />
+              <TextField v-model="email" rules="required" :loading="isUserDetailsFormLoading" label="Email" />
             </v-col>
             <v-col cols="4">
-              <TextField v-model="mobile" rules="required" label="Contact No(Mobile)" />
+              <TextField
+                v-model="mobile"
+                rules="required"
+                :loading="isUserDetailsFormLoading"
+                label="Contact No(Mobile)"
+              />
             </v-col>
             <v-col cols="4">
-              <TextField v-model="landline" rules="required" label="Contact No(landline)" />
+              <TextField
+                v-model="landline"
+                rules="required"
+                :loading="isUserDetailsFormLoading"
+                label="Contact No(landline)"
+              />
             </v-col>
             <v-col cols="6">
-              <TextArea v-model="address" rules="required" label="Address" />
+              <TextArea v-model="address" rules="required" :loading="isUserDetailsFormLoading" label="Address" />
               <v-row>
                 <v-col cols="6">
                   <TextField v-model="invoiceCopies" label="Number of Invoice Copies" />
@@ -38,26 +48,34 @@
             </v-col>
             <v-col cols="6">
               <div>
-                <TextField v-model="city" rules="required" label="City" />
+                <TextField v-model="city" rules="required" :loading="isUserDetailsFormLoading" label="City" />
               </div>
               <div>
-                <TextField v-model="state" rules="required" label="State" />
+                <SelectField
+                  v-model="state"
+                  item-text="state_name"
+                  item-value="state_code"
+                  rules="required"
+                  :items="states"
+                  :loading="isUserDetailsFormLoading"
+                  label="State"
+                />
               </div>
               <div>
-                <TextField v-model="pincode" rules="required" label="Pincode" />
+                <TextField v-model="pincode" rules="required" :loading="isUserDetailsFormLoading" label="Pincode" />
               </div>
             </v-col>
             <v-col cols="6">
-              <TextField v-model="bankName" label="Bank Name" />
+              <TextField v-model="bankName" :loading="isUserDetailsFormLoading" label="Bank Name" />
             </v-col>
             <v-col cols="6">
-              <TextField v-model="branchName" label="Branch Name" />
+              <TextField v-model="branchName" :loading="isUserDetailsFormLoading" label="Branch Name" />
             </v-col>
             <v-col cols="6">
-              <TextField v-model="ifscCode" label="IFSC Code" />
+              <TextField v-model="ifscCode" :loading="isUserDetailsFormLoading" label="IFSC Code" />
             </v-col>
             <v-col cols="6">
-              <TextField v-model="accountNumber" label="Account Number" />
+              <TextField v-model="accountNumber" :loading="isUserDetailsFormLoading" label="Account Number" />
             </v-col>
           </v-row>
         </v-card-text>
@@ -67,7 +85,7 @@
             >{{ showAddNewAdminForm ? "Close" : "Add" }} User</v-btn
           >
           <v-spacer></v-spacer>
-          <v-btn color="primary" @click="passes(updateUserDetails)">Update</v-btn>
+          <v-btn color="primary" :loading="isUserDetailsFormLoading" @click="passes(updateUserDetails)">Update</v-btn>
         </v-card-title>
       </v-card>
     </ValidationObserver>
@@ -160,6 +178,7 @@
 import { ValidationObserver } from "vee-validate";
 import TextField from "@/components/TextField";
 import TextArea from "@/components/TextArea";
+import SelectField from "@/components/SelectField";
 import * as AT from "@/store/actionTypes";
 
 export default {
@@ -167,10 +186,12 @@ export default {
   components: {
     ValidationObserver,
     TextField,
-    TextArea
+    TextArea,
+    SelectField
   },
   data() {
     return {
+      userId: null,
       // user details form
       adminName: "",
       firmName: "",
@@ -268,7 +289,46 @@ export default {
         .finally(() => (this.isAdminFormLoading = false));
     },
     updateUserDetails() {
-      //
+      this.isUserDetailsFormLoading = true;
+      const postData = {
+        id: this.userId,
+        data: {
+          username: this.adminName,
+          email: this.email,
+          name: this.firmName,
+          gst_number: this.gstNumber,
+          address: this.address,
+          cityname: this.city,
+          state_code: this.state_code,
+          pincode: this.pincode,
+          mobile_number: this.mobile,
+          landline_number: this.landline,
+          bank_name: this.bankName,
+          branch_name: this.branchName,
+          ifsc_code: this.ifscCode,
+          account_no: this.accountNumber
+        }
+      };
+
+      this.$store
+        .dispatch(AT.ADD_ADMIN_USER, postData)
+        .then(res => {
+          this.isUserDetailsFormLoading = false;
+          this.$store.dispatch(AT.GET_STATES);
+          this.$store.dispatch(AT.SNACKBAR, {
+            text: "User Details Updated Successfully"
+          });
+          this.$refs.admin.reset();
+        })
+        .catch(err => {
+          const error =
+            (err && err.response && err.response.data && err.response.data.message) || "Something went wrong";
+          this.$store.dispatch(AT.SNACKBAR, {
+            color: "error",
+            text: error
+          });
+        })
+        .finally(() => (this.isUserDetailsFormLoading = false));
     },
     addState() {
       this.isStateFormLoading = true;
