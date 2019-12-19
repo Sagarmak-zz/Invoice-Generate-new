@@ -20,4 +20,3 @@ export const STATES = id => {
   }
   return `/states`;
 };
-export const ADD_ADMIN_USER = "/userDetail/create";

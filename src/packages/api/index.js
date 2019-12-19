@@ -52,6 +52,6 @@ export default {
   },
 
   addAdminUser(data) {
-    return HTTP.post(EP.ADD_ADMIN_USER, { ...data }).then(({ data }) => data);
+    return HTTP.post(EP.USER_DETAILS, { ...data }).then(({ data }) => data);
   }
 };
