@@ -14,4 +14,10 @@ export const PRODUCTS = id => {
 };
 export const GET_BILLS = "/bills";
 export const GET_CHALLANS = "/challans";
-export const GET_STATES = "/states";
+export const STATES = id => {
+  if (id) {
+    return `/states/${id}`;
+  }
+  return `/states`;
+};
+export const ADD_ADMIN_USER = "/userDetail/create";

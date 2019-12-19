@@ -3,12 +3,16 @@ export default {
   user: {},
   bills: [],
   challans: [],
-  states: [],
 
   // customers
   gettingCustomers: false,
   customers: [],
+
   // products
   products: [],
-  gettingProducts: false
+  gettingProducts: false,
+
+  // states
+  states: [],
+  gettingStates: false
 };

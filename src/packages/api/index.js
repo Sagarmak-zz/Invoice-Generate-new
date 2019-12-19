@@ -18,10 +18,6 @@ export default {
     return HTTP.get(EP.GET_CHALLANS).then(({ data }) => data);
   },
 
-  getStates() {
-    return HTTP.get(EP.GET_STATES).then(({ data }) => data);
-  },
-
   // customers
   getCustomers() {
     return HTTP.get(EP.CUSTOMERS()).then(({ data }) => data.Firms);
@@ -42,5 +38,20 @@ export default {
   },
   editProduct(data) {
     return HTTP.patch(EP.PRODUCTS(data.productId), { ...data }).then(({ data }) => data);
+  },
+
+  // states
+  getStates() {
+    return HTTP.get(EP.STATES()).then(({ data }) => data.states);
+  },
+  addState(data) {
+    return HTTP.post(EP.STATES(), { ...data }).then(({ data }) => data);
+  },
+  editState(data) {
+    return HTTP.patch(EP.STATES(data.stateCode), { ...data }).then(({ data }) => data);
+  },
+
+  addAdminUser(data) {
+    return HTTP.post(EP.ADD_ADMIN_USER, { ...data }).then(({ data }) => data);
   }
 };

@@ -40,10 +40,6 @@ export default {
     return api.getChalans().then(response => context.commit(MT.SET_CHALLANS, response));
   },
 
-  [AT.GET_STATES]: context => {
-    return api.getStates().then(response => context.commit(MT.SET_STATES, response));
-  },
-
   // customers
   [AT.GETTING_CUSTOMERS]: (context, value) => context.commit(MT.SET_GETTING_CUSTOMERS, value),
   [AT.GET_CUSTOMERS]: context => {
@@ -66,5 +62,19 @@ export default {
       .finally(() => context.dispatch(AT.GETTING_PRODUCTS, false));
   },
   [AT.ADD_PRODUCT]: (context, data) => api.addProduct(data).then(response => response),
-  [AT.EDIT_PRODUCT]: (context, data) => api.editProduct(data).then(response => response)
+  [AT.EDIT_PRODUCT]: (context, data) => api.editProduct(data).then(response => response),
+
+  // states
+  [AT.GETTING_STATES]: (context, value) => context.commit(MT.SET_GETTING_STATES, value),
+  [AT.GET_STATES]: context => {
+    context.dispatch(AT.GETTING_STATES, true);
+    return api
+      .getStates()
+      .then(response => context.commit(MT.SET_STATES, response))
+      .finally(() => context.dispatch(AT.GETTING_STATES, false));
+  },
+  [AT.ADD_STATE]: (context, data) => api.addState(data).then(response => response),
+  [AT.EDIT_STATE]: (context, data) => api.editState(data).then(response => response),
+
+  [AT.ADD_ADMIN_USER]: (context, data) => api.addAdminUser(data).then(response => response)
 };
