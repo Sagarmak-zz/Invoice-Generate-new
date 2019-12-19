@@ -24,13 +24,13 @@ export default {
 
   // customers
   getCustomers() {
-    return HTTP.get(EP.CUSTOMERS).then(({ data }) => data.Firms);
+    return HTTP.get(EP.CUSTOMERS()).then(({ data }) => data.Firms);
   },
   addCustomer(data) {
-    return HTTP.post(EP.CUSTOMERS, { ...data }).then(({ data }) => data);
+    return HTTP.post(EP.CUSTOMERS(), { ...data }).then(({ data }) => data);
   },
   editCustomer(data) {
-    return HTTP.patch(EP.CUSTOMERS, { ...data }).then(({ data }) => data);
+    return HTTP.patch(EP.CUSTOMERS(), { ...data }).then(({ data }) => data);
   },
 
   // products
