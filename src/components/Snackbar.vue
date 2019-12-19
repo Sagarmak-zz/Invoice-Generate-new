@@ -26,7 +26,7 @@ export default {
       this.status = true;
 
       return {
-        timeout: this.snackbar.timeout || 4000,
+        timeout: this.snackbar.timeout || 7000,
         color: this.snackbar && this.snackbar.color ? this.snackbar.color : "success",
         icon: this.snackbar.icon || "",
         text: this.snackbar.text || ""
