@@ -9,7 +9,7 @@
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-text-field v-model="search" hide-details label="Search" class="pa-2"></v-text-field>
             </div>
-            <v-btn color="primary" dark @click="showCustomerModal = true">New Customer</v-btn>
+            <v-btn color="primary" dark @click="addCustomerModal">New Customer</v-btn>
           </div>
           <v-data-table
             :headers="headers"
@@ -20,7 +20,7 @@
             hide-default-footer
           >
             <template v-slot:item.action="{ item }">
-              <v-icon small class="mr-2">
+              <v-icon small class="mr-2" @click="editCustomerModal(item)">
                 fas fa-edit
               </v-icon>
             </template>
@@ -28,11 +28,12 @@
         </v-card>
       </v-col>
     </v-row>
-    <CustomerModal v-if="showCustomerModal" />
+    <CustomerModal v-if="showCustomerModal" :data="modalData" @product-modal="prodcutModalHandler" />
   </div>
 </template>
 <script>
 import CustomerModal from "@/components/CustomerModal.vue";
+import * as AT from "@/store/actionTypes";
 
 export default {
   name: "Customers",
@@ -50,22 +51,7 @@ export default {
         { text: "Mobile - Landline", value: "mobile-landline" },
         { text: "Actions", value: "action", sortable: false }
       ],
-      firmName: "",
-      person_name: "",
-      email: "",
-      gst_number: "",
-      billing_address: "",
-      billing_city: "",
-      billing_state_code: "",
-      billing_pincode: "",
-      billing_mobile_number: "",
-      billing_landline_number: "",
-      shipping_address: "",
-      shipping_city: "",
-      shipping_state_code: "",
-      shipping_pincode: "",
-      shipping_mobile_number: "",
-      shipping_landline_number: ""
+      modalData: {}
     };
   },
   computed: {
@@ -87,46 +73,37 @@ export default {
     }
   },
   methods: {
-    addCustomer() {
-      const data = {
-        name: this.name,
-        person_name: this.person_name,
-        email: this.email,
-        gst_number: this.gst_number,
-        billing_address: this.billing_address,
-        billing_city: this.billing_city,
-        billing_state_code: this.billing_state_code,
-        billing_pincode: this.billing_pincode,
-        billing_mobile_number: this.billing_mobile_number,
-        billing_landline_number: this.billing_landline_number,
-        shipping_address: this.shipping_address,
-        shipping_city: this.shipping_city,
-        shipping_state_code: this.shipping_state_code,
-        shipping_pincode: this.shipping_pincode,
-        shipping_mobile_number: this.shipping_mobile_number,
-        shipping_landline_number: this.shipping_landline_number
+    editCustomerModal(item) {
+      this.modalData = {
+        action: "edit",
+        data: item
       };
+      this.showCustomerModal = true;
+    },
+    addCustomerModal() {
+      this.modalData = {
+        action: "add",
+        data: {}
+      };
+      this.showCustomerModal = true;
+    },
+    prodcutModalHandler(data) {
+      console.log("TCL: prodcutModalHandler -> data", data);
+      if (data == "close") {
+        this.showCustomerModal = false;
+      } else if (data.action == "add") {
+        // call add dispatcher
+        this.addCustomer(data.data);
+      } else if (data.action == "edit") {
+        // call edit dispatcher
+        this.editCustomer(data.data);
+      }
+    },
+    addCustomer(data) {
       this.$store.dispatch(AT.ADD_CUSTOMER, data);
     },
-    editCustomer() {
-      const data = {
-        name: this.name,
-        person_name: this.person_name,
-        email: this.email,
-        gst_number: this.gst_number,
-        billing_address: this.billing_address,
-        billing_city: this.billing_city,
-        billing_state_code: this.billing_state_code,
-        billing_pincode: this.billing_pincode,
-        billing_mobile_number: this.billing_mobile_number,
-        billing_landline_number: this.billing_landline_number,
-        shipping_address: this.shipping_address,
-        shipping_city: this.shipping_city,
-        shipping_state_code: this.shipping_state_code,
-        shipping_pincode: this.shipping_pincode,
-        shipping_mobile_number: this.shipping_mobile_number,
-        shipping_landline_number: this.shipping_landline_number
-      };
+    editCustomer(data) {
+      console.log("TCL: editCustomer -> data", data);
       this.$store.dispatch(AT.EDIT_CUSTOMER, data);
     }
   }

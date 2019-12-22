@@ -1,4 +1,12 @@
 import Vue from "vue";
-import { ValidationProvider, extend } from "vee-validate";
+import { extend } from "vee-validate";
+import { required, email, alpha_num, min, max, length, integer } from "vee-validate/dist/rules";
 
-Vue.component("ValidationProvider", ValidationProvider);
+// register VeeValidate rules
+extend("required", required);
+extend("email", email);
+extend("alpha_num", alpha_num);
+extend("min", min);
+extend("max", max);
+extend("length", length);
+extend("integer", integer);

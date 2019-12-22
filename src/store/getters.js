@@ -3,7 +3,6 @@ export default {
   userDetails: state => state.user,
   bills: state => state.bills,
   challans: state => state.challans,
-  states: state => state.states,
 
   // customers
   gettingCustomers: state => state.gettingCustomers,
@@ -11,5 +10,9 @@ export default {
 
   // products
   gettingProducts: state => state.gettingProducts,
-  products: state => state.products
+  products: state => state.products,
+
+  // states
+  gettingStates: state => state.gettingStates,
+  states: state => state.states
 };

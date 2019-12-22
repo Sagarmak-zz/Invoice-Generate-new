@@ -1,5 +1,10 @@
 export const LOGIN = "/login";
-export const USER_DETAILS = "/userdetails";
+export const USER_DETAILS = id => {
+  if (id) {
+    return `/userdetails/${id}`;
+  }
+  return `/userdetails`;
+};
 export const CUSTOMERS = id => {
   if (id) {
     return `/customers/${id}`;
@@ -14,4 +19,9 @@ export const PRODUCTS = id => {
 };
 export const GET_BILLS = "/bills";
 export const GET_CHALLANS = "/challans";
-export const GET_STATES = "/states";
+export const STATES = id => {
+  if (id) {
+    return `/states/${id}`;
+  }
+  return `/states`;
+};
