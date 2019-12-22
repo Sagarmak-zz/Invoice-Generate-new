@@ -14,15 +14,20 @@
               <TextField v-model="firmName" rules="required" :loading="isUserDetailsFormLoading" label="Firm Name" />
             </v-col>
             <v-col cols="4">
-              <TextField v-model="gstNumber" rules="required" :loading="isUserDetailsFormLoading" label="GST Number" />
+              <TextField
+                v-model="gstNumber"
+                rules="required|length:15|alpha_num"
+                :loading="isUserDetailsFormLoading"
+                label="GST Number"
+              />
             </v-col>
             <v-col cols="4">
-              <TextField v-model="email" rules="required" :loading="isUserDetailsFormLoading" label="Email" />
+              <TextField v-model="email" rules="required|email" :loading="isUserDetailsFormLoading" label="Email" />
             </v-col>
             <v-col cols="4">
               <TextField
                 v-model="mobile"
-                rules="required"
+                rules="required|integer"
                 :loading="isUserDetailsFormLoading"
                 label="Contact No(Mobile)"
               />
@@ -30,7 +35,7 @@
             <v-col cols="4">
               <TextField
                 v-model="landline"
-                rules="required"
+                rules="required|integer"
                 :loading="isUserDetailsFormLoading"
                 label="Contact No(landline)"
               />
@@ -39,10 +44,10 @@
               <TextArea v-model="address" rules="required" :loading="isUserDetailsFormLoading" label="Address" />
               <v-row>
                 <v-col cols="6">
-                  <TextField v-model="invoiceCopies" label="Number of Invoice Copies" />
+                  <TextField v-model="invoiceCopies" rules="integer" label="Number of Invoice Copies" />
                 </v-col>
                 <v-col cols="6">
-                  <TextField v-model="chalanCopies" label="Number of Chalan Copies" />
+                  <TextField v-model="chalanCopies" rules="integer" label="Number of Chalan Copies" />
                 </v-col>
               </v-row>
             </v-col>
@@ -62,7 +67,12 @@
                 />
               </div>
               <div>
-                <TextField v-model="pincode" rules="required" :loading="isUserDetailsFormLoading" label="Pincode" />
+                <TextField
+                  v-model="pincode"
+                  rules="required|integer"
+                  :loading="isUserDetailsFormLoading"
+                  label="Pincode"
+                />
               </div>
             </v-col>
             <v-col cols="6">
@@ -311,7 +321,7 @@ export default {
       };
 
       this.$store
-        .dispatch(AT.ADD_ADMIN_USER, postData)
+        .dispatch(AT.UPDATE_USER_DETAILS, postData)
         .then(res => {
           this.isUserDetailsFormLoading = false;
           this.$store.dispatch(AT.GET_STATES);
