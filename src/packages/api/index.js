@@ -52,7 +52,7 @@ export default {
     return HTTP.get(EP.USER_DETAILS()).then(({ data }) => data);
   },
   editUserDetails(data) {
-    return HTTP.patch(EP.USER_DETAILS(data.id), { ...data }).then(({ data }) => data);
+    return HTTP.patch(EP.USER_DETAILS(data.id), { ...data.data }).then(({ data }) => data);
   },
   addAdminUser(data) {
     return HTTP.post(EP.USER_DETAILS(), { ...data }).then(({ data }) => data);
