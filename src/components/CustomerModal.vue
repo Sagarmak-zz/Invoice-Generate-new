@@ -12,16 +12,21 @@
           <v-card-text>
             <v-row>
               <v-col cols="6">
-                <TextField v-model="firmName" rules="required" label="Firm Name" />
+                <TextField v-model="firmName" :loading="loading" rules="required" label="Firm Name" />
               </v-col>
               <v-col cols="6">
-                <TextField v-model="personName" rules="required" label="Contact Person name" />
+                <TextField v-model="personName" :loading="loading" rules="required" label="Contact Person name" />
               </v-col>
               <v-col cols="6">
-                <TextField v-model="gstNumber" rules="required|length:15|alpha_num" label="GST Number" />
+                <TextField
+                  v-model="gstNumber"
+                  :loading="loading"
+                  rules="required|length:15|alpha_num"
+                  label="GST Number"
+                />
               </v-col>
               <v-col cols="6">
-                <TextField v-model="email" rules="required|email" label="Email" />
+                <TextField v-model="email" :loading="loading" rules="required|email" label="Email" />
               </v-col>
             </v-row>
 
@@ -32,16 +37,26 @@
 
             <v-row>
               <v-col cols="6">
-                <TextArea v-model="billingAddress" rules="required" label="Billing Address" />
+                <TextArea v-model="billingAddress" :loading="loading" rules="required" label="Billing Address" />
               </v-col>
               <v-col cols="6" class="d-flex flex-column">
-                <TextField v-model="billingMobileNumber" rules="integer" label="Contact No(Mobile)" />
-                <TextField v-model="billingLandlineNumber" rules="integer" label="Contact No(Landline)" />
+                <TextField
+                  v-model="billingMobileNumber"
+                  rules="integer"
+                  :loading="loading"
+                  label="Contact No(Mobile)"
+                />
+                <TextField
+                  v-model="billingLandlineNumber"
+                  rules="integer"
+                  :loading="loading"
+                  label="Contact No(Landline)"
+                />
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="4">
-                <TextField v-model="billingCity" rules="required" label="Billing City" />
+                <TextField v-model="billingCity" rules="required" :loading="loading" label="Billing City" />
               </v-col>
               <v-col cols="4">
                 <SelectField
@@ -50,11 +65,12 @@
                   item-value="state_code"
                   rules="required"
                   :items="states"
+                  :loading="loading"
                   label="Billing State"
                 />
               </v-col>
               <v-col cols="4">
-                <TextField v-model="billingPincode" rules="integer" label="Pincode" />
+                <TextField v-model="billingPincode" rules="integer" :loading="loading" label="Pincode" />
               </v-col>
             </v-row>
 
@@ -62,23 +78,33 @@
               <span class="headline">
                 Shipping
               </span>
-              <v-btn small @click="sameAsBilling">
+              <v-btn small :loading="loading" @click="sameAsBilling">
                 same as above
               </v-btn>
             </div>
             <v-divider />
             <v-row>
               <v-col cols="6">
-                <TextArea v-model="shippingAddress" rules="required" label="Shipping Address" />
+                <TextArea v-model="shippingAddress" :loading="loading" rules="required" label="Shipping Address" />
               </v-col>
               <v-col cols="6" class="d-flex flex-column">
-                <TextField v-model="shippingMobileNumber" rules="integer" label="Contact No(Mobile)" />
-                <TextField v-model="shippingLandlineNumber" rules="integer" label="Contact No(Landline)" />
+                <TextField
+                  v-model="shippingMobileNumber"
+                  :loading="loading"
+                  rules="integer"
+                  label="Contact No(Mobile)"
+                />
+                <TextField
+                  v-model="shippingLandlineNumber"
+                  :loading="loading"
+                  rules="integer"
+                  label="Contact No(Landline)"
+                />
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="4">
-                <TextField v-model="shippingCity" rules="required" label="Shipping City" />
+                <TextField v-model="shippingCity" rules="required" :loading="loading" label="Shipping City" />
               </v-col>
               <v-col cols="4">
                 <SelectField
@@ -87,18 +113,19 @@
                   item-value="state_code"
                   rules="required"
                   :items="states"
+                  :loading="loading"
                   label="Shipping State"
                 />
               </v-col>
               <v-col cols="4">
-                <TextField v-model="shippingPincode" rules="integer" label="Pincode" />
+                <TextField v-model="shippingPincode" rules="integer" :loading="loading" label="Pincode" />
               </v-col>
             </v-row>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="$emit('product-modal', 'close')">Close</v-btn>
-            <v-btn color="primary" @click="passes(productModal)">
+            <v-btn :loading="loading" color="primary" text @click="$emit('product-modal', 'close')">Close</v-btn>
+            <v-btn :loading="loading" color="primary" @click="passes(productModal)">
               {{ addModal ? "Save" : "Update" }}
             </v-btn>
           </v-card-actions>
@@ -125,11 +152,16 @@ export default {
     data: {
       default: () => {},
       type: Object
+    },
+    loading: {
+      default: false,
+      type: Boolean
     }
   },
   data() {
     return {
       dialog: true,
+      id: null,
       firmName: "",
       personName: "",
       email: "",
@@ -161,6 +193,7 @@ export default {
   },
   created() {
     const data = this.data.data;
+    this.id = data.id;
     this.firmName = data.name;
     this.personName = data.person_name;
     this.email = data.email;
@@ -183,6 +216,7 @@ export default {
       return {
         action: this.data && this.data.action || "add",
         data: {
+          id: this.id,
           name: this.firmName,
           person_name: this.personName,
           email: this.email,

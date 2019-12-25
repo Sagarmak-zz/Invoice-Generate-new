@@ -28,7 +28,12 @@
         </v-card>
       </v-col>
     </v-row>
-    <CustomerModal v-if="showCustomerModal" :data="modalData" @product-modal="prodcutModalHandler" />
+    <CustomerModal
+      v-if="showCustomerModal"
+      :data="modalData"
+      :loading="isFormLoading"
+      @product-modal="prodcutModalHandler"
+    />
   </div>
 </template>
 <script>
@@ -44,6 +49,7 @@ export default {
     return {
       search: "",
       showCustomerModal: false,
+      isFormLoading: false,
       headers: [
         { text: "Firm Name", value: "name" },
         { text: "Person Name", value: "person_name" },
@@ -88,7 +94,6 @@ export default {
       this.showCustomerModal = true;
     },
     prodcutModalHandler(data) {
-      console.log("TCL: prodcutModalHandler -> data", data);
       if (data == "close") {
         this.showCustomerModal = false;
       } else if (data.action == "add") {
@@ -100,11 +105,30 @@ export default {
       }
     },
     addCustomer(data) {
-      this.$store.dispatch(AT.ADD_CUSTOMER, data);
+      this.isFormLoading = true;
+      this.$store
+        .dispatch(AT.ADD_CUSTOMER, data)
+        .then(res => {
+          this.showCustomerModal = false;
+          this.$store.dispatch(AT.SNACKBAR, {
+            text: "Customer added Successfully!"
+          });
+        })
+        .catch(err => console.log(err))
+        .finally(() => (this.isFormLoading = false));
     },
     editCustomer(data) {
-      console.log("TCL: editCustomer -> data", data);
-      this.$store.dispatch(AT.EDIT_CUSTOMER, data);
+      this.isFormLoading = true;
+      this.$store
+        .dispatch(AT.EDIT_CUSTOMER, data)
+        .then(res => {
+          this.showCustomerModal = false;
+          this.$store.dispatch(AT.SNACKBAR, {
+            text: "Customer updated Successfully!"
+          });
+        })
+        .catch(err => console.log(err))
+        .finally(() => (this.isFormLoading = false));
     }
   }
 };
