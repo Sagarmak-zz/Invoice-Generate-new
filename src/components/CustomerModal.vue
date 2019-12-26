@@ -26,7 +26,7 @@
                 />
               </v-col>
               <v-col cols="6">
-                <TextField v-model="email" :loading="loading" rules="required|email" label="Email" />
+                <TextField v-model="email" :loading="loading" rules="email" label="Email" />
               </v-col>
             </v-row>
 
