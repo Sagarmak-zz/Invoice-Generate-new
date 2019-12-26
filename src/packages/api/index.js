@@ -38,7 +38,7 @@ export default {
 
   // states
   getStates() {
-    return HTTP.get(EP.STATES()).then(({ data }) => data.states);
+    return HTTP.get(EP.STATES()).then(({ data }) => data);
   },
   addState(data) {
     return HTTP.post(EP.STATES(), { ...data }).then(({ data }) => data);
