@@ -329,6 +329,7 @@ export default {
     // 1. lock customer name and invoice no after first item Add+
     // 2. reload to reset
     // get SR No
+    // digit regex: /^\d*\.?\d*$/
     // getLastBillInvoiceNumber
     // checkInvoice
     // validation before submitting item and bill
