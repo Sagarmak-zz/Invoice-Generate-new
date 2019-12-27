@@ -28,12 +28,22 @@ export default {
       });
   },
 
+  [AT.GET_CHALLANS]: context => {
+    return api.getChalans().then(response => context.commit(MT.SET_CHALLANS, response));
+  },
+
+  //bills
   [AT.GET_BILLS]: context => {
     return api.getBills().then(response => context.commit(MT.SET_BILLS, response));
   },
-
-  [AT.GET_CHALLANS]: context => {
-    return api.getChalans().then(response => context.commit(MT.SET_CHALLANS, response));
+  [AT.INVOICE_NUMBER]: context => {
+    return api.getLastBill().then(response => response);
+  },
+  [AT.CHECK_INVOICE]: (context, data) => {
+    return api.checkInvoice(data).then(response => response);
+  },
+  [AT.SUBMIT_BILL]: (context, data) => {
+    return api.submitBill(data).then(response => response);
   },
 
   // customers

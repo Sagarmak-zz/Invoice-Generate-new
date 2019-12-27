@@ -1,8 +1,13 @@
 export const SNACKBAR = "SNACKBAR";
 
 export const LOGIN = "LOGIN";
-export const GET_BILLS = "GET_BILLS";
 export const GET_CHALLANS = "GET_CHALLANS";
+
+// bills
+export const GET_BILLS = "GET_BILLS";
+export const INVOICE_NUMBER = "INVOICE_NUMBER";
+export const CHECK_INVOICE = "CHECK_INVOICE";
+export const SUBMIT_BILL = "SUBMIT_BILL";
 
 // customers
 export const GETTING_CUSTOMERS = "GETTING_CUSTOMERS";
