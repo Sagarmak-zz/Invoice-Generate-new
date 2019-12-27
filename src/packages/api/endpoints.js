@@ -17,7 +17,9 @@ export const PRODUCTS = id => {
   }
   return `/products`;
 };
-export const GET_BILLS = "/bills";
+export const BILLS = "/bills";
+export const INVOICE_NUMBER = "/invoiceNumber";
+export const CHECK_INVOICE = "/checkInvoice";
 export const GET_CHALLANS = "/challans";
 export const STATES = id => {
   if (id) {

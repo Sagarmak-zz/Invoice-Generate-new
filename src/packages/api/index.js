@@ -6,12 +6,22 @@ export default {
     return HTTP.post(EP.LOGIN, { ...data }).then(({ data }) => data);
   },
 
-  getBills() {
-    return HTTP.get(EP.GET_BILLS).then(({ data }) => data);
-  },
-
   getChalans() {
     return HTTP.get(EP.GET_CHALLANS).then(({ data }) => data);
+  },
+
+  //bills
+  getBills() {
+    return HTTP.get(EP.BILLS).then(({ data }) => data);
+  },
+  getLastBill() {
+    return HTTP.get(EP.INVOICE_NUMBER).then(({ data }) => data);
+  },
+  checkInvoice(data) {
+    return HTTP.get(`${EP.CHECK_INVOICE}/${data.invoiceNo}/${data.fiscalYear}`).then(({ data }) => data);
+  },
+  submitBill(data) {
+    return HTTP.post(EP.BILLS, { ...data }).then(({ data }) => data);
   },
 
   // customers
