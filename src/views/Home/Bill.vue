@@ -11,11 +11,24 @@
               Fiscal year
             </div>
             <div class="bill-page__card__header__input">
-              <TextField :value="year" class="ma-0 pa-0" />
+              <TextField
+                v-model="fiscalYear.startYear"
+                :loading="fetchingApi"
+                rules="required|integer"
+                hide-details
+                class="ma-0 pa-0"
+              />
             </div>
             <span class="title">-</span>
             <div class="bill-page__card__header__input">
-              <TextField class="ma-0 pa-0" readonly label="20" />
+              <TextField
+                :value="+fiscalYear.startYear + 1"
+                :loading="fetchingApi"
+                rules="required|integer"
+                class="ma-0 pa-0"
+                readonly
+                hide-details
+              />
             </div>
           </div>
         </div>
@@ -30,14 +43,28 @@
                 item-text="name"
                 item-value="id"
                 :items="customers"
+                :loading="fetchingApi"
                 label="Customers"
+                :disabled="lockUserDetails"
+                :prepend-inner-icon="lockUserDetails ? 'fas fa-lock' : ''"
                 return-object
                 @input="selectCustomerHandler"
               />
             </v-col>
             <v-col>
-              <TextField class="ma-0 pa-0" label="Invoice Number" />
+              <TextField
+                v-model="invoiceNumber"
+                class="ma-0 pa-0"
+                label="Invoice Number"
+                rules="required"
+                :error="!invoiceNumberAvailable"
+                :loading="fetchingApi"
+                :disabled="lockUserDetails"
+                :prepend-inner-icon="lockUserDetails ? 'fas fa-lock' : ''"
+                @blur="checkIfInvoiceIsAvailable"
+              />
             </v-col>
+
             <v-col>
               <v-menu
                 v-model="dateMenu"
@@ -48,10 +75,20 @@
                 min-width="290px"
               >
                 <template v-slot:activator="{ on }">
-                  <v-text-field v-model="dateInputField" label="Invoice Date" readonly v-on="on"></v-text-field>
+                  <v-text-field
+                    v-model="dateInputField"
+                    :disabled="lockUserDetails"
+                    :loading="fetchingApi"
+                    label="Invoice Date"
+                    readonly
+                    v-on="on"
+                  ></v-text-field>
                 </template>
                 <v-date-picker v-model="dateInputField" @input="dateMenu = false"></v-date-picker>
               </v-menu>
+            </v-col>
+            <v-col cols="2">
+              <v-btn v-if="lockUserDetails" color="warning" @click="resetForm">Reset</v-btn>
             </v-col>
           </v-row>
         </v-card-text>
@@ -71,6 +108,7 @@
               <v-col>
                 <SelectField
                   v-model="currentProduct"
+                  :loading="fetchingApi"
                   item-text="product_name"
                   rules="required"
                   item-value="id"
@@ -81,11 +119,12 @@
                 />
               </v-col>
               <v-col>
-                <TextField v-model="itemSize" rules="required" class="ma-0 pa-0" label="Size" />
+                <TextField v-model="itemSize" :loading="fetchingApi" rules="required" class="ma-0 pa-0" label="Size" />
               </v-col>
               <v-col>
                 <TextField
                   v-model="itemQuantity"
+                  :loading="fetchingApi"
                   rules="required|min_value:1"
                   min="5"
                   class="ma-0 pa-0"
@@ -93,7 +132,14 @@
                 />
               </v-col>
               <v-col>
-                <TextField v-model="itemRate" rules="required|min_value:1" class="ma-0 pa-0" label="Rate" />
+                <TextField
+                  v-model="itemRate"
+                  :loading="fetchingApi"
+                  :rules="{ required: true, regex: /^\d*\.?\d*$/, min_value: 1 }"
+                  class="ma-0 pa-0"
+                  label="Rate"
+                />
+                <!-- <TextField v-model="itemRate" rules="required|min_value:1" class="ma-0 pa-0" label="Rate" /> -->
               </v-col>
               <v-col class="text-center">
                 Amount:
@@ -101,7 +147,7 @@
               </v-col>
               <v-divider vertical />
               <v-col cols="1">
-                <v-btn color="info" @click="passes(addItemsToTable)">
+                <v-btn :disabled="!currentCustomer" type="submit" color="info" @click="passes(addItemsToTable)">
                   <v-icon left small>fas fa-plus</v-icon>
                   <span>Add</span>
                 </v-btn>
@@ -109,7 +155,13 @@
             </v-row>
             <v-row>
               <v-col>
-                <TextField v-model="discountRate" rules="integer" class="ma-0 pa-0" label="Discount Rate" />
+                <TextField
+                  v-model="discountRate"
+                  :loading="fetchingApi"
+                  :rules="{ regex: /^\d*\.?\d*$/, min_value: 1 }"
+                  class="ma-0 pa-0"
+                  label="Discount Rate"
+                />
               </v-col>
               <v-col class="text-center">
                 Amount:
@@ -148,7 +200,13 @@
 
         <!-- Normal Table -->
         <v-card-text>
-          <v-data-table :headers="tableHeaders" :items="tableDetails" class="elevation-1" hide-default-footer>
+          <v-data-table
+            :headers="tableHeaders"
+            :items="tableDetails"
+            :loading="fetchingApi"
+            class="elevation-1"
+            hide-default-footer
+          >
             <template v-slot:header="{ props }">
               <thead class="v-data-table-header">
                 <tr>
@@ -162,6 +220,9 @@
                   <th></th>
                 </tr>
               </thead>
+            </template>
+            <template v-slot:item.serialNumber="{ item }">
+              {{ tableDetails.map(x => x.uniqId).indexOf(item.uniqId) + 1 }}
             </template>
             <template v-slot:item.remove="{ item }">
               <v-btn icon @click="removeItem(item)">
@@ -204,8 +265,9 @@
         </v-card-text>
 
         <v-divider />
+
         <v-card-actions class="justify-end">
-          <v-btn color="primary">Submit</v-btn>
+          <v-btn color="primary" @click="submitBill">Submit</v-btn>
         </v-card-actions>
       </v-card>
     </ValidationObserver>
@@ -227,6 +289,10 @@ export default {
   },
   data() {
     return {
+      fiscalYear: {
+        startYear: "",
+        endYear: ""
+      },
       // top 3 textboxes
       currentCustomer: null,
       invoiceNumber: null,
@@ -246,7 +312,10 @@ export default {
       sgstRate: 0,
       igstRate: 0,
 
-      tableDetails: []
+      tableDetails: [],
+
+      invoiceNumberAvailable: true,
+      fetchingApi: false
     };
   },
   computed: {
@@ -313,57 +382,93 @@ export default {
       return [
         { text: "SR", value: "serialNumber", divider: true },
         { text: "Name", value: "productName", width: "10rem" },
-        { text: "Size", value: "productSize" },
-        { text: "Qty", value: "productQuantity" },
-        { text: "Rate", value: "productRate" },
+        { text: "Size", value: "size" },
+        { text: "Qty", value: "quantity" },
+        { text: "Rate", value: "price" },
         { text: "Amount", value: "totalAmount" },
-        { text: "Rate", value: "discountRate" },
-        { text: "Amount", value: "discountAmount" },
+        { text: "Rate", value: "discount_percentage" },
+        { text: "Amount", value: "discount_amount" },
         { text: "Total", value: "itemAfterDiscountAmount" },
         { text: "Action", value: "remove" }
       ];
+    },
+    lockUserDetails() {
+      return !this.tableDetails.length ? false : true;
     }
   },
   created() {
     // TODO
-    // 1. lock customer name and invoice no after first item Add+
-    // 2. reload to reset
-    // get SR No
-    // digit regex: /^\d*\.?\d*$/
-    // getLastBillInvoiceNumber
-    // checkInvoice
-    // validation before submitting item and bill
-    // submit bill
+    // validate and submit bill
     this.dateInputField = `${this.year}-${this.month}-${this.date}`;
+    this.fiscalYear.startYear = this.year;
+    this.getInvoiceNumber();
   },
   methods: {
+    getInvoiceNumber() {
+      this.fetchingApi = true;
+      this.$store
+        .dispatch(AT.INVOICE_NUMBER)
+        .then(res => (this.invoiceNumber = res.invoiceNumber))
+        .finally(() => (this.fetchingApi = false));
+    },
+    checkIfInvoiceIsAvailable() {
+      this.fetchingApi = true;
+      const startyear = +this.fiscalYear.startYear;
+      const endYear = (+this.fiscalYear.startYear + 1).toString().slice(-2);
+      this.$store
+        .dispatch(AT.CHECK_INVOICE, { invoiceNo: this.invoiceNumber, fiscalYear: `${startyear}-${endYear}` })
+        .then(res => {
+          if (res.message == "proceed") {
+            this.invoiceNumberAvailable = true;
+          } else {
+            this.invoiceNumberAvailable = false;
+          }
+        })
+        .catch(err => (this.invoiceNumberAvailable = false))
+        .finally(() => (this.fetchingApi = false));
+    },
     roundNumber(value) {
       return Utils.roundNumber(value);
     },
     addItemsToTable() {
       this.tableDetails.push({
         uniqId: Date.now(),
-        productId: this.currentProduct.id,
+        product_id: this.currentProduct.id,
         productName: this.currentProduct.product_name,
-        productSize: this.itemSize,
-        productQuantity: this.itemQuantity,
-        productRate: this.itemRate,
+        size: this.itemSize,
+        quantity: this.itemQuantity,
+        price: this.itemRate,
         totalAmount: this.itemAmount,
-        discountRate: this.discountRate ? this.discountRate : 0,
-        discountAmount: this.itemDiscountAmount,
+        discount_percentage: this.discountRate ? this.discountRate : 0,
+        discount_amount: this.itemDiscountAmount,
         // IMP: itemAfterDiscountAmount are basically taxable amount
         itemAfterDiscountAmount: this.itemAfterDiscountAmount,
         itemCgstAmount: this.itemCgstAmount ? this.itemCgstAmount : 0,
         itemSgstAmount: this.itemSgstAmount ? this.itemSgstAmount : 0,
         itemIgstAmount: this.itemIgstAmount ? this.itemIgstAmount : 0
       });
-      // clear form at the end - itemDetails
+      this.resetItemForm();
     },
     removeItem(item) {
       const index = this.tableDetails.findIndex(td => {
         return td.uniqId === item.uniqId;
       });
       this.tableDetails.splice(index, 1);
+    },
+    submitBill() {
+      // user_id: this.userDetails && this.this.userDetails.id,
+      // firm_id: this.currentCustomer && this.currentCustomer.id,
+      // invoice_no: this.invoiceNo,
+      // invoiceYear,
+      // taxable_amount: this.aggregatedTotalTaxableAmountAmount,
+      // sgst_percentage: this.sgstRate,
+      // sgst_amount: this.aggregatedSgstAmount,
+      // cgst_percentage: this.cgstRate,
+      // cgst_amount: this.aggregatedCgstAmount,
+      // igst_percentage: this.igstRate,
+      // igst_amount: this.aggregatedIgstAmount,
+      // total_payable_amount: this.aggregatedTotalInvoiceAmount,
+      // bill_detail: this.tableDetails
     },
     selectCustomerHandler(e) {
       if (e.shipping_state_code == this.userDetails.state_code) {
@@ -377,7 +482,21 @@ export default {
       }
     },
     selectProductHandler(e) {
-      this.itemRate = e.product_price;
+      e ? (this.itemRate = e.product_price) : "";
+    },
+    resetForm() {
+      this.tableDetails = [];
+      this.$refs.userDetails.reset();
+      this.resetItemForm();
+    },
+    async resetItemForm() {
+      this.currentProduct = null;
+      this.itemSize = "";
+      this.itemQuantity = null;
+      this.itemRate = null;
+      requestAnimationFrame(() => {
+        this.$refs.itemDetails.reset();
+      });
     }
   }
 };
