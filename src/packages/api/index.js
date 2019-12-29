@@ -37,7 +37,7 @@ export default {
 
   // products
   getProducts() {
-    return HTTP.get(EP.PRODUCTS()).then(({ data }) => data.products);
+    return HTTP.get(EP.PRODUCTS()).then(({ data }) => data);
   },
   addProduct(data) {
     return HTTP.post(EP.PRODUCTS(), { ...data }).then(({ data }) => data);
