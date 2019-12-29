@@ -13,7 +13,7 @@
             <div class="bill-page__card__header__input">
               <TextField
                 v-model="fiscalYear.startYear"
-                :loading="fetchingApi"
+                :loading="isFormLoading"
                 rules="required|integer"
                 hide-details
                 class="ma-0 pa-0"
@@ -23,7 +23,7 @@
             <div class="bill-page__card__header__input">
               <TextField
                 :value="+fiscalYear.startYear + 1"
-                :loading="fetchingApi"
+                :loading="isFormLoading"
                 rules="required|integer"
                 class="ma-0 pa-0"
                 readonly
@@ -43,7 +43,7 @@
                 item-text="name"
                 item-value="id"
                 :items="customers"
-                :loading="fetchingApi"
+                :loading="isFormLoading"
                 label="Customers"
                 :disabled="lockUserDetails"
                 :prepend-inner-icon="lockUserDetails ? 'fas fa-lock' : ''"
@@ -58,7 +58,7 @@
                 label="Invoice Number"
                 rules="required"
                 :error="!invoiceNumberAvailable"
-                :loading="fetchingApi"
+                :loading="isFormLoading"
                 :disabled="lockUserDetails"
                 :prepend-inner-icon="lockUserDetails ? 'fas fa-lock' : ''"
                 @blur="checkIfInvoiceIsAvailable"
@@ -78,7 +78,7 @@
                   <v-text-field
                     v-model="dateInputField"
                     :disabled="lockUserDetails"
-                    :loading="fetchingApi"
+                    :loading="isFormLoading"
                     label="Invoice Date"
                     readonly
                     v-on="on"
@@ -108,7 +108,7 @@
               <v-col>
                 <SelectField
                   v-model="currentProduct"
-                  :loading="fetchingApi"
+                  :loading="isFormLoading"
                   item-text="product_name"
                   rules="required"
                   item-value="id"
@@ -119,12 +119,18 @@
                 />
               </v-col>
               <v-col>
-                <TextField v-model="itemSize" :loading="fetchingApi" rules="required" class="ma-0 pa-0" label="Size" />
+                <TextField
+                  v-model="itemSize"
+                  :loading="isFormLoading"
+                  rules="required"
+                  class="ma-0 pa-0"
+                  label="Size"
+                />
               </v-col>
               <v-col>
                 <TextField
                   v-model="itemQuantity"
-                  :loading="fetchingApi"
+                  :loading="isFormLoading"
                   rules="required|min_value:1"
                   min="5"
                   class="ma-0 pa-0"
@@ -134,7 +140,7 @@
               <v-col>
                 <TextField
                   v-model="itemRate"
-                  :loading="fetchingApi"
+                  :loading="isFormLoading"
                   :rules="{ required: true, regex: /^\d*\.?\d*$/, min_value: 1 }"
                   class="ma-0 pa-0"
                   label="Rate"
@@ -157,7 +163,7 @@
               <v-col>
                 <TextField
                   v-model="discountRate"
-                  :loading="fetchingApi"
+                  :loading="isFormLoading"
                   :rules="{ regex: /^\d*\.?\d*$/, min_value: 1 }"
                   class="ma-0 pa-0"
                   label="Discount Rate"
@@ -203,7 +209,7 @@
           <v-data-table
             :headers="tableHeaders"
             :items="tableDetails"
-            :loading="fetchingApi"
+            :loading="isFormLoading"
             class="elevation-1"
             hide-default-footer
           >
@@ -315,7 +321,7 @@ export default {
       tableDetails: [],
 
       invoiceNumberAvailable: true,
-      fetchingApi: false
+      isFormLoading: false
     };
   },
   computed: {
@@ -397,22 +403,20 @@ export default {
     }
   },
   created() {
-    // TODO
-    // validate and submit bill
     this.dateInputField = `${this.year}-${this.month}-${this.date}`;
     this.fiscalYear.startYear = this.year;
     this.getInvoiceNumber();
   },
   methods: {
     getInvoiceNumber() {
-      this.fetchingApi = true;
+      this.isFormLoading = true;
       this.$store
         .dispatch(AT.INVOICE_NUMBER)
         .then(res => (this.invoiceNumber = res.invoiceNumber))
-        .finally(() => (this.fetchingApi = false));
+        .finally(() => (this.isFormLoading = false));
     },
     checkIfInvoiceIsAvailable() {
-      this.fetchingApi = true;
+      this.isFormLoading = true;
       const startyear = +this.fiscalYear.startYear;
       const endYear = (+this.fiscalYear.startYear + 1).toString().slice(-2);
       this.$store
@@ -420,12 +424,25 @@ export default {
         .then(res => {
           if (res.message == "proceed") {
             this.invoiceNumberAvailable = true;
+            this.$store.dispatch(AT.SNACKBAR, {
+              text: "Invoice Number Available"
+            });
           } else {
             this.invoiceNumberAvailable = false;
+            this.$store.dispatch(AT.SNACKBAR, {
+              color: "error",
+              text: "Invoice Number not available"
+            });
           }
         })
-        .catch(err => (this.invoiceNumberAvailable = false))
-        .finally(() => (this.fetchingApi = false));
+        .catch(err => {
+          this.invoiceNumberAvailable = false;
+          this.$store.dispatch(AT.SNACKBAR, {
+            color: "error",
+            text: "Some unexpected error occured. Please try again after few minutes"
+          });
+        })
+        .finally(() => (this.isFormLoading = false));
     },
     roundNumber(value) {
       return Utils.roundNumber(value);
@@ -456,19 +473,48 @@ export default {
       this.tableDetails.splice(index, 1);
     },
     submitBill() {
-      // user_id: this.userDetails && this.this.userDetails.id,
-      // firm_id: this.currentCustomer && this.currentCustomer.id,
-      // invoice_no: this.invoiceNo,
-      // invoiceYear,
-      // taxable_amount: this.aggregatedTotalTaxableAmountAmount,
-      // sgst_percentage: this.sgstRate,
-      // sgst_amount: this.aggregatedSgstAmount,
-      // cgst_percentage: this.cgstRate,
-      // cgst_amount: this.aggregatedCgstAmount,
-      // igst_percentage: this.igstRate,
-      // igst_amount: this.aggregatedIgstAmount,
-      // total_payable_amount: this.aggregatedTotalInvoiceAmount,
-      // bill_detail: this.tableDetails
+      this.isFormLoading = true;
+      const startyear = +this.fiscalYear.startYear;
+      const endYear = (+this.fiscalYear.startYear + 1).toString().slice(-2);
+      const fiscalYear = `${startyear}-${endYear}`;
+
+      const postData = {
+        user_id: this.userDetails && this.userDetails.id,
+        firm_id: this.currentCustomer && this.currentCustomer.id,
+        invoice_no: this.invoiceNumber,
+        invoiceYear: fiscalYear,
+        taxable_amount: this.aggregatedTotalTaxableAmountAmount,
+        sgst_percentage: this.sgstRate,
+        sgst_amount: this.aggregatedSgstAmount,
+        cgst_percentage: this.cgstRate,
+        cgst_amount: this.aggregatedCgstAmount,
+        igst_percentage: this.igstRate,
+        igst_amount: this.aggregatedIgstAmount,
+        total_payable_amount: this.aggregatedTotalInvoiceAmount,
+        bill_detail: this.tableDetails
+      };
+
+      if (this.tableDetails && this.tableDetails.length) {
+        this.$store
+          .dispatch(AT.SUBMIT_BILL, postData)
+          .then(res => {
+            this.$store.dispatch(AT.SNACKBAR, {
+              text: "Bill creation successful"
+            });
+          })
+          .catch(err => {
+            this.$store.dispatch(AT.SNACKBAR, {
+              color: "error",
+              text: "Something went wrong, please try again after sometime"
+            });
+          })
+          .finally(() => (this.isFormLoading = false));
+      } else {
+        this.$store.dispatch(AT.SNACKBAR, {
+          color: "error",
+          text: "Please fill in the data first"
+        });
+      }
     },
     selectCustomerHandler(e) {
       if (e.shipping_state_code == this.userDetails.state_code) {
