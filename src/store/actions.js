@@ -43,7 +43,10 @@ export default {
     return api.checkInvoice(data).then(response => response);
   },
   [AT.SUBMIT_BILL]: (context, data) => {
-    return api.submitBill(data).then(response => response);
+    return api.submitBill(data).then(response => {
+      context.dispatch(AT.GET_BILLS);
+      return response;
+    });
   },
 
   // customers
