@@ -5,13 +5,13 @@ import theme from "@/plugins/vuetify/theme";
 
 Vue.use(Vuetify);
 
-const opts = {
+export default new Vuetify({
   theme: {
     themes: {
       light: theme
     }
   },
-  iconfont: "fa"
-};
-
-export default new Vuetify(opts);
+  icons: {
+    iconfont: "fa"
+  }
+});

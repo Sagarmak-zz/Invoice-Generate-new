@@ -1,8 +1,18 @@
 export const SNACKBAR = "SNACKBAR";
 
 export const LOGIN = "LOGIN";
+
+// bills
 export const GET_BILLS = "GET_BILLS";
-export const GET_CHALLANS = "GET_CHALLANS";
+export const INVOICE_NUMBER = "INVOICE_NUMBER";
+export const CHECK_INVOICE = "CHECK_INVOICE";
+export const SUBMIT_BILL = "SUBMIT_BILL";
+
+// chalan
+export const GET_CHALANS = "GET_CHALANS";
+export const GET_LAST_CHALAN = "GET_LAST_CHALAN";
+export const CHECK_CHALAN = "CHECK_CHALAN";
+export const SUBMIT_CHALAN = "SUBMIT_CHALAN";
 
 // customers
 export const GETTING_CUSTOMERS = "GETTING_CUSTOMERS";

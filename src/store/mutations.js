@@ -5,7 +5,7 @@ export default {
 
   [MT.SET_USER]: (state, data) => (state.user = data),
   [MT.SET_BILLS]: (state, data) => (state.bills = data),
-  [MT.SET_CHALLANS]: (state, data) => (state.challans = data),
+  [MT.SET_CHALANS]: (state, data) => (state.chalans = data),
 
   // custoemrs
   [MT.SET_GETTING_CUSTOMERS]: (state, data) => (state.gettingCustomers = data),

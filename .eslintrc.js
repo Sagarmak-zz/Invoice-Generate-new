@@ -9,7 +9,13 @@ module.exports = {
     "vue/no-side-effects-in-computed-properties": "off",
     "vue/component-name-in-template-casing": ["error", "PascalCase"],
     "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off"
+    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
+    "vue/no-unused-components": [
+      "off",
+      {
+        ignoreWhenBindingPresent: false
+      }
+    ]
   },
   parserOptions: {
     parser: "babel-eslint"

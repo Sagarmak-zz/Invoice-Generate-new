@@ -70,7 +70,7 @@ export default {
         this.$store.dispatch(AT.GET_CUSTOMERS),
         this.$store.dispatch(AT.GET_PRODUCTS),
         this.$store.dispatch(AT.GET_BILLS),
-        this.$store.dispatch(AT.GET_CHALLANS),
+        this.$store.dispatch(AT.GET_CHALANS),
         this.$store.dispatch(AT.GET_STATES)
       ];
       Promise.all(promises)

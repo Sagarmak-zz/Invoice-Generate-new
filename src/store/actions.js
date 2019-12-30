@@ -28,12 +28,39 @@ export default {
       });
   },
 
+  //bills
   [AT.GET_BILLS]: context => {
     return api.getBills().then(response => context.commit(MT.SET_BILLS, response));
   },
+  // get last invoice number
+  [AT.INVOICE_NUMBER]: context => {
+    return api.getLastBill().then(response => response);
+  },
+  [AT.CHECK_INVOICE]: (context, data) => {
+    return api.checkInvoice(data).then(response => response);
+  },
+  [AT.SUBMIT_BILL]: (context, data) => {
+    return api.submitBill(data).then(response => {
+      context.dispatch(AT.GET_BILLS);
+      return response;
+    });
+  },
 
-  [AT.GET_CHALLANS]: context => {
-    return api.getChalans().then(response => context.commit(MT.SET_CHALLANS, response));
+  // chalan
+  [AT.GET_CHALANS]: context => {
+    return api.getChalans().then(response => context.commit(MT.SET_CHALANS, response));
+  },
+  [AT.GET_LAST_CHALAN]: context => {
+    return api.getLastChalan().then(response => response);
+  },
+  [AT.CHECK_CHALAN]: (context, data) => {
+    return api.checkChalan(data).then(response => response);
+  },
+  [AT.SUBMIT_CHALAN]: (context, data) => {
+    return api.submitChalan(data).then(response => {
+      context.dispatch(AT.GET_CHALANS);
+      return response;
+    });
   },
 
   // customers
@@ -45,8 +72,18 @@ export default {
       .then(response => context.commit(MT.SET_CUSTOMERS, response))
       .finally(() => context.dispatch(AT.GETTING_CUSTOMERS, false));
   },
-  [AT.ADD_CUSTOMER]: (context, data) => api.addCustomer(data).then(response => response),
-  [AT.EDIT_CUSTOMER]: (context, data) => api.editCustomer(data).then(response => response),
+  [AT.ADD_CUSTOMER]: (context, data) => {
+    return api.addCustomer(data).then(response => {
+      context.dispatch(AT.GET_CUSTOMERS);
+      return response;
+    });
+  },
+  [AT.EDIT_CUSTOMER]: (context, data) => {
+    return api.editCustomer(data).then(response => {
+      context.dispatch(AT.GET_CUSTOMERS);
+      return response;
+    });
+  },
 
   // products
   [AT.GETTING_PRODUCTS]: (context, value) => context.commit(MT.SET_GETTING_PRODUCTS, value),
@@ -57,8 +94,18 @@ export default {
       .then(response => context.commit(MT.SET_PRODUCTS, response))
       .finally(() => context.dispatch(AT.GETTING_PRODUCTS, false));
   },
-  [AT.ADD_PRODUCT]: (context, data) => api.addProduct(data).then(response => response),
-  [AT.EDIT_PRODUCT]: (context, data) => api.editProduct(data).then(response => response),
+  [AT.ADD_PRODUCT]: (context, data) => {
+    return api.addProduct(data).then(response => {
+      context.dispatch(AT.GET_PRODUCTS);
+      return response;
+    });
+  },
+  [AT.EDIT_PRODUCT]: (context, data) => {
+    return api.editProduct(data).then(response => {
+      context.dispatch(AT.GET_PRODUCTS);
+      return response;
+    });
+  },
 
   // states
   [AT.GETTING_STATES]: (context, value) => context.commit(MT.SET_GETTING_STATES, value),
