@@ -15,8 +15,8 @@ export default {
   name: "InfoCard",
   props: {
     title: {
-      default: "",
-      type: String
+      default: null,
+      type: Number
     },
     subtitle: {
       default: "",
