@@ -20,7 +20,10 @@ export const PRODUCTS = id => {
 export const BILLS = "/bills";
 export const INVOICE_NUMBER = "/invoiceNumber";
 export const CHECK_INVOICE = "/checkInvoice";
-export const GET_CHALLANS = "/challans";
+export const CHALLANS = "/challans";
+export const GET_LAST_CHALLAN = "/challanNumber";
+// check if chalan invoice number is available
+export const CHECK_CHALAN = "/checkChallan";
 export const STATES = id => {
   if (id) {
     return `/states/${id}`;

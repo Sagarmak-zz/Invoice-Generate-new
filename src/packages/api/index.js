@@ -6,14 +6,11 @@ export default {
     return HTTP.post(EP.LOGIN, { ...data }).then(({ data }) => data);
   },
 
-  getChalans() {
-    return HTTP.get(EP.GET_CHALLANS).then(({ data }) => data);
-  },
-
   //bills
   getBills() {
     return HTTP.get(EP.BILLS).then(({ data }) => data);
   },
+  // get last invoice number
   getLastBill() {
     return HTTP.get(EP.INVOICE_NUMBER).then(({ data }) => data);
   },
@@ -22,6 +19,20 @@ export default {
   },
   submitBill(data) {
     return HTTP.post(EP.BILLS, { ...data }).then(({ data }) => data);
+  },
+
+  // chalans
+  getChalans() {
+    return HTTP.get(EP.CHALLANS).then(({ data }) => data);
+  },
+  getLastChalan() {
+    return HTTP.get(EP.GET_LAST_CHALLAN).then(({ data }) => data);
+  },
+  checkChalan(data) {
+    return HTTP.get(`${EP.CHECK_CHALAN}/${data.chalanNo}/${data.fiscalYear}`).then(({ data }) => data);
+  },
+  submitChalan(data) {
+    return HTTP.post(EP.CHALLANS, { ...data }).then(({ data }) => data);
   },
 
   // customers
