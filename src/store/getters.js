@@ -2,7 +2,7 @@ export default {
   snackbar: state => state.snackbar,
   userDetails: state => state.user,
   bills: state => state.bills,
-  challans: state => state.challans,
+  chalans: state => state.chalans,
 
   // customers
   gettingCustomers: state => state.gettingCustomers,

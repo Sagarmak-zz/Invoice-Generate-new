@@ -48,7 +48,7 @@ export default {
 
   // chalan
   [AT.GET_CHALANS]: context => {
-    return api.getChalans().then(response => context.commit(MT.SET_CHALLANS, response));
+    return api.getChalans().then(response => context.commit(MT.SET_CHALANS, response));
   },
   [AT.GET_LAST_CHALAN]: context => {
     return api.getLastChalan().then(response => response);

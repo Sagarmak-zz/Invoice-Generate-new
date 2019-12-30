@@ -2,7 +2,7 @@ export default {
   snackbar: {},
   user: {},
   bills: [],
-  challans: [],
+  chalans: [],
 
   // customers
   gettingCustomers: false,
