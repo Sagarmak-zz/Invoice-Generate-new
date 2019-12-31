@@ -121,7 +121,14 @@ export default {
             text: "Product Added Successfully"
           });
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          const error =
+            (err && err.response && err.response.data && err.response.data.message) || "Something went wrong";
+          this.$store.dispatch(AT.SNACKBAR, {
+            color: "error",
+            text: error
+          });
+        })
         .finally(() => {
           this.resetDialogForm();
         });
@@ -151,7 +158,14 @@ export default {
             text: "Product Updated Successfully"
           });
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          const error =
+            (err && err.response && err.response.data && err.response.data.message) || "Something went wrong";
+          this.$store.dispatch(AT.SNACKBAR, {
+            color: "error",
+            text: error
+          });
+        })
         .finally(() => {
           this.resetDialogForm();
         });

@@ -114,7 +114,14 @@ export default {
             text: "Customer added Successfully!"
           });
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          const error =
+            (err && err.response && err.response.data && err.response.data.message) || "Something went wrong";
+          this.$store.dispatch(AT.SNACKBAR, {
+            color: "error",
+            text: error
+          });
+        })
         .finally(() => (this.isFormLoading = false));
     },
     editCustomer(data) {
@@ -127,7 +134,14 @@ export default {
             text: "Customer updated Successfully!"
           });
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          const error =
+            (err && err.response && err.response.data && err.response.data.message) || "Something went wrong";
+          this.$store.dispatch(AT.SNACKBAR, {
+            color: "error",
+            text: error
+          });
+        })
         .finally(() => (this.isFormLoading = false));
     }
   }
