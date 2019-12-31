@@ -1,4 +1,18 @@
 export default {
+  snackbar: {},
   user: {},
-  snackbar: {}
+  bills: [],
+  chalans: [],
+
+  // customers
+  gettingCustomers: false,
+  customers: [],
+
+  // products
+  products: [],
+  gettingProducts: false,
+
+  // states
+  states: [],
+  gettingStates: false
 };

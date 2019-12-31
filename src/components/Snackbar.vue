@@ -1,11 +1,6 @@
 <template>
   <div class="snackbar">
-    <v-snackbar
-      v-model="status"
-      :color="getSnackbarData.color"
-      :timeout="getSnackbarData.timeout"
-      top
-    >
+    <v-snackbar v-model="status" :color="getSnackbarData.color" :timeout="getSnackbarData.timeout" top>
       <span> {{ getSnackbarData.text }} </span>
       <v-icon v-if="getSnackbarData.icon" flat>
         {{ getSnackbarData.icon }}
@@ -31,11 +26,8 @@ export default {
       this.status = true;
 
       return {
-        timeout: this.snackbar.timeout || 4000,
-        color:
-          this.snackbar && this.snackbar.color
-            ? this.snackbar.color
-            : "success",
+        timeout: this.snackbar.timeout || 7000,
+        color: this.snackbar && this.snackbar.color ? this.snackbar.color : "success",
         icon: this.snackbar.icon || "",
         text: this.snackbar.text || ""
       };

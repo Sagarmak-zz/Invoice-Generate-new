@@ -6,6 +6,7 @@ import Home from "../views/Home.vue";
 import Dashboard from "../views/Home/Dashboard.vue";
 import Bill from "../views/Home/Bill.vue";
 import Chalan from "../views/Home/Chalan.vue";
+import Customers from "../views/Home/Customers.vue";
 import Products from "../views/Home/Products.vue";
 import History from "../views/Home/History.vue";
 import Reports from "../views/Home/Reports.vue";
@@ -50,6 +51,12 @@ const routes = [
         path: "/chalan",
         name: "home.chalan",
         component: Chalan,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: "/customers",
+        name: "home.customers",
+        component: Customers,
         meta: { requiresAuth: true }
       },
       {

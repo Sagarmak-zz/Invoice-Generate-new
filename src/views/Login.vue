@@ -31,9 +31,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer />
-              <v-btn :loading="isLoading" color="primary" @click="login"
-                >Login</v-btn
-              >
+              <v-btn :loading="isLoading" color="primary" @click="login">Login</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>

@@ -18,7 +18,7 @@ export default {
 </script>
 <style lang="scss">
 #app {
-  font-family: "Raleway", sans-serif;
+  font-family: "Lato", sans-serif;
   // -webkit-font-smoothing: antialiased;
   // -moz-osx-font-smoothing: grayscale;
   // text-align: center;
