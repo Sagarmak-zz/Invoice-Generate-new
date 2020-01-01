@@ -54,7 +54,7 @@ export default {
     return HTTP.post(EP.PRODUCTS(), { ...data }).then(({ data }) => data);
   },
   editProduct(data) {
-    return HTTP.patch(EP.PRODUCTS(data.productId), { ...data }).then(({ data }) => data);
+    return HTTP.patch(EP.PRODUCTS(data.id), { ...data }).then(({ data }) => data);
   },
 
   // states
