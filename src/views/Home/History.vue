@@ -44,7 +44,7 @@
             <td :colspan="headers.length" class="py-2">
               <v-data-table
                 :headers="itemHeaders"
-                :items="type == 'bills' ? item.billdetail : item.product_detail"
+                :items="type == 'bills' ? item.billdetail : item.challan_detail"
                 class="elevation-1"
                 dense
                 hide-default-footer
@@ -120,7 +120,7 @@ export default {
         { text: "Quantity", value: "quantity" },
         { text: "Rate", value: "price" },
         { text: "Amount", value: "amount" },
-        { text: "D Rate", value: "discount_percentage" },
+        { text: "Dis %", value: "discount_percentage" },
         { text: "D Amount", value: "discount_amount" },
         { text: "Total", value: "total" }
       ];
