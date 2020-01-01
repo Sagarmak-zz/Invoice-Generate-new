@@ -276,13 +276,13 @@ export default {
       const postData = {
         name: this.newAdminName,
         email: this.newAdminEmail,
-        password: this.newAdminPassword
+        password: this.newAdminPassword,
+        adminfirm_id: this.userDetails && this.userDetails.id
       };
       this.$store
         .dispatch(AT.ADD_ADMIN_USER, postData)
         .then(res => {
           this.showAddNewAdminForm = false;
-          this.$store.dispatch(AT.GET_STATES);
           this.$store.dispatch(AT.SNACKBAR, {
             text: "New Admin User Added Successfully"
           });
@@ -301,15 +301,15 @@ export default {
     updateUserDetails() {
       this.isUserDetailsFormLoading = true;
       const postData = {
-        id: this.userId,
+        id: this.userDetails && this.userDetails.id,
         data: {
           username: this.adminName,
           email: this.email,
-          name: this.firmName,
+          firmName: this.firmName,
           gst_number: this.gstNumber,
           address: this.address,
           cityname: this.city,
-          state_code: this.state_code,
+          state_code: this.state,
           pincode: this.pincode,
           mobile_number: this.mobile,
           landline_number: this.landline,
