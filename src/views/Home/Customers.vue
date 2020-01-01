@@ -12,7 +12,7 @@
             <v-btn color="primary" dark @click="addCustomerModal">New Customer</v-btn>
           </div>
           <v-data-table
-            :headers="headers"
+            :headers="customerTableHeaders"
             :items="customizedCustomers"
             class="elevation-1"
             :search="search"
@@ -20,7 +20,7 @@
             hide-default-footer
           >
             <template v-slot:item.action="{ item }">
-              <v-icon small class="mr-2" @click="editCustomerModal(item)">
+              <v-icon small class="mr-2" color="primary" @click="editCustomerModal(item)">
                 fas fa-edit
               </v-icon>
             </template>
@@ -32,7 +32,7 @@
       v-if="showCustomerModal"
       :data="modalData"
       :loading="isFormLoading"
-      @product-modal="prodcutModalHandler"
+      @customer-modal="customerModalHandler"
     />
   </div>
 </template>
@@ -50,13 +50,6 @@ export default {
       search: "",
       showCustomerModal: false,
       isFormLoading: false,
-      headers: [
-        { text: "Firm Name", value: "name" },
-        { text: "Person Name", value: "person_name" },
-        { text: "GST Number", value: "gst_number" },
-        { text: "Mobile - Landline", value: "mobile-landline" },
-        { text: "Actions", value: "action", sortable: false }
-      ],
       modalData: {}
     };
   },
@@ -66,6 +59,15 @@ export default {
     },
     customers() {
       return this.$store.getters.customers || [];
+    },
+    customerTableHeaders() {
+      return [
+        { text: "Firm Name", value: "name" },
+        { text: "Person Name", value: "person_name" },
+        { text: "GST Number", value: "gst_number" },
+        { text: "Mobile - Landline", value: "mobile-landline" },
+        { text: "Actions", value: "action", sortable: false }
+      ];
     },
     customizedCustomers() {
       return this.customers.map(item => {
@@ -93,7 +95,7 @@ export default {
       };
       this.showCustomerModal = true;
     },
-    prodcutModalHandler(data) {
+    customerModalHandler(data) {
       if (data == "close") {
         this.showCustomerModal = false;
       } else if (data.action == "add") {

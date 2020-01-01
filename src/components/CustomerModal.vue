@@ -5,7 +5,7 @@
         <v-card>
           <v-card-title class="align-center justify-space-between">
             <span class="headline">{{ addModal ? "Add" : "Edit" }} Customer</span>
-            <v-btn icon @click="$emit('product-modal', 'close')">
+            <v-btn icon @click="$emit('customer-modal', 'close')">
               <v-icon>fas fa-times-circle</v-icon>
             </v-btn>
           </v-card-title>
@@ -124,8 +124,8 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn :loading="loading" color="primary" text @click="$emit('product-modal', 'close')">Close</v-btn>
-            <v-btn :loading="loading" color="primary" @click="passes(productModal)">
+            <v-btn :loading="loading" color="primary" text @click="$emit('customer-modal', 'close')">Close</v-btn>
+            <v-btn :loading="loading" color="primary" @click="passes(customerModal)">
               {{ addModal ? "Save" : "Update" }}
             </v-btn>
           </v-card-actions>
@@ -236,8 +236,8 @@ export default {
         }
       }
     },
-    productModal() {
-      this.$emit('product-modal', this.collectData());
+    customerModal() {
+      this.$emit('customer-modal', this.collectData());
     },
     sameAsBilling() {
       this.shippingAddress = this.billingAddress;
