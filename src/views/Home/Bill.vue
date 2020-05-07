@@ -164,9 +164,9 @@
                 <TextField
                   v-model="discountRate"
                   :loading="isFormLoading"
-                  :rules="{ regex: /^\d*\.?\d*$/, min_value: 1 }"
+                  :rules="{ regex: /^\d*\.?\d*$/, min_value: 1, max_value: 100 }"
                   class="ma-0 pa-0"
-                  label="Discount Rate"
+                  label="Discount Rate (%)"
                 />
               </v-col>
               <v-col class="text-center">
@@ -501,6 +501,7 @@ export default {
             this.$store.dispatch(AT.SNACKBAR, {
               text: "Bill creation successful"
             });
+            // show bill & reset form
           })
           .catch(err => {
             this.$store.dispatch(AT.SNACKBAR, {
