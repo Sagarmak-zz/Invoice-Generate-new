@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <HomeNavbar :app-name="appName" @logout="logout" />
+    <HomeNavbar :app-name="appName" :is-dark-mode="isDarkMode" @dark-mode="toggleDarkMode" @logout="logout" />
 
     <NavigationDrawer :items="items" />
 
@@ -58,6 +58,9 @@ export default {
   computed: {
     appName() {
       return config.appTitle();
+    },
+    isDarkMode() {
+      return this.$store.getters.isDarkMode;
     }
   },
   created() {
@@ -88,6 +91,9 @@ export default {
             });
           }
         });
+    },
+    toggleDarkMode(data) {
+      this.$store.dispatch(AT.DARK_MODE, data);
     },
     logout() {
       Auth.destroyToken();

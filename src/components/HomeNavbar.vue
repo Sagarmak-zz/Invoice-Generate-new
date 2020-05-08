@@ -3,6 +3,14 @@
     <v-toolbar-title>{{ appName }} Billing System</v-toolbar-title>
     <v-spacer></v-spacer>
 
+    <div>
+      <v-btn v-if="!isDarkMode" icon @click="$emit('dark-mode', { isDarkMode: true })">
+        <v-icon>fas fa-moon</v-icon>
+      </v-btn>
+      <v-btn v-if="isDarkMode" icon @click="$emit('dark-mode', { isDarkMode: false })">
+        <v-icon>fas fa-sun</v-icon>
+      </v-btn>
+    </div>
     <v-menu offset-y>
       <template v-slot:activator="{ on }">
         <v-btn icon v-on="on">
@@ -24,6 +32,10 @@ export default {
     appName: {
       default: "",
       type: String
+    },
+    isDarkMode: {
+      default: false,
+      type: Boolean
     }
   },
   methods: {
