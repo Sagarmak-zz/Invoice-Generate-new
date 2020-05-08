@@ -1,5 +1,4 @@
 export default {
-  isDarkMode: false,
   snackbar: {},
   user: {},
   bills: [],

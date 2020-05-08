@@ -1,7 +1,6 @@
 import * as MT from "./mutationTypes";
 
 export default {
-  [MT.SET_DARK_MODE]: (state, data) => (state.isDarkMode = data.isDarkMode),
   [MT.SET_SNACKBAR]: (state, data) => (state.snackbar = data),
 
   [MT.SET_USER]: (state, data) => (state.user = data),
