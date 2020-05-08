@@ -1,4 +1,5 @@
 export default {
+  isDarkMode: state => state.isDarkMode,
   snackbar: state => state.snackbar,
   userDetails: state => state.user,
   bills: state => state.bills || [],

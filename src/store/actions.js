@@ -4,6 +4,9 @@ import api from "@/packages/api";
 import Auth from "@/packages/auth";
 
 export default {
+  [AT.DARK_MODE]: (context, data) => {
+    context.commit(MT.SET_DARK_MODE, data);
+  },
   [AT.SNACKBAR]: (context, data) => {
     context.commit(MT.SET_SNACKBAR, {
       status: true,
