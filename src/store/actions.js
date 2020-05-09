@@ -116,13 +116,25 @@ export default {
       .then(response => context.commit(MT.SET_STATES, response))
       .finally(() => context.dispatch(AT.GETTING_STATES, false));
   },
-  [AT.ADD_STATE]: (context, data) => api.addState(data).then(response => response),
-  [AT.EDIT_STATE]: (context, data) => api.editState(data).then(response => response),
+  [AT.ADD_STATE]: (context, data) =>
+    api.addState(data).then(response => {
+      context.dispatch(AT.GET_STATES);
+      return response;
+    }),
+  [AT.EDIT_STATE]: (context, data) =>
+    api.editState(data).then(response => {
+      context.dispatch(AT.GET_STATES);
+      return response;
+    }),
 
   // settings
   [AT.USER_DETAILS]: context => {
     return api.getUserDetails().then(response => context.commit(MT.SET_USER, response));
   },
-  [AT.UPDATE_USER_DETAILS]: (context, data) => api.editUserDetails(data).then(response => response),
+  [AT.UPDATE_USER_DETAILS]: (context, data) =>
+    api.editUserDetails(data).then(response => {
+      context.dispatch(AT.USER_DETAILS);
+      return response;
+    }),
   [AT.ADD_ADMIN_USER]: (context, data) => api.addAdminUser(data).then(response => response)
 };
