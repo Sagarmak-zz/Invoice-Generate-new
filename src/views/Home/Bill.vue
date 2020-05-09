@@ -501,7 +501,8 @@ export default {
             this.$store.dispatch(AT.SNACKBAR, {
               text: "Bill creation successful"
             });
-            // show bill & reset form
+            this.resetForm();
+            // show bill
           })
           .catch(err => {
             this.$store.dispatch(AT.SNACKBAR, {
