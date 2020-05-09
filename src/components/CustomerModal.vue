@@ -5,6 +5,7 @@
         <v-card>
           <v-card-title class="align-center justify-space-between">
             <span class="headline">{{ addModal ? "Add" : "Edit" }} Customer</span>
+
             <v-btn icon @click="$emit('customer-modal', 'close')">
               <v-icon>fas fa-times-circle</v-icon>
             </v-btn>
