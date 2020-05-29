@@ -164,7 +164,7 @@
                 <TextField
                   v-model="discountRate"
                   :loading="isFormLoading"
-                  :rules="{ regex: /^\d*\.?\d*$/, min_value: 1, max_value: 100 }"
+                  :rules="{ regex: /^\d*\.?\d*$/, min_value: 0, max_value: 100 }"
                   class="ma-0 pa-0"
                   label="Discount Rate (%)"
                 />
@@ -277,12 +277,20 @@
         </v-card-actions>
       </v-card>
     </ValidationObserver>
+    <BillModal
+      v-if="showPreviewBill"
+      :data="invoicePostData"
+      :title="'Title'"
+      :loading="false"
+      @bill-modal="billModalActionHandler"
+    />
   </div>
 </template>
 <script>
 import { ValidationObserver } from "vee-validate";
 import TextField from "@/components/TextField";
 import SelectField from "@/components/SelectField";
+import BillModal from "@/components/BillModal";
 import * as AT from "@/store/actionTypes";
 import Utils from "@/utils/Utils";
 
@@ -291,7 +299,8 @@ export default {
   components: {
     ValidationObserver,
     TextField,
-    SelectField
+    SelectField,
+    BillModal
   },
   data() {
     return {
@@ -321,7 +330,10 @@ export default {
       tableDetails: [],
 
       invoiceNumberAvailable: true,
-      isFormLoading: false
+      isFormLoading: false,
+
+      showPreviewBill: false,
+      invoicePostData: {}
     };
   },
   computed: {
@@ -391,10 +403,10 @@ export default {
         { text: "Size", value: "size" },
         { text: "Qty", value: "quantity" },
         { text: "Rate", value: "price" },
-        { text: "Amount", value: "totalAmount" },
+        { text: "Amount", value: "totalAmount", divider: true },
         { text: "Rate", value: "discount_percentage" },
         { text: "Amount", value: "discount_amount" },
-        { text: "Total", value: "itemAfterDiscountAmount" },
+        { text: "Total", value: "itemAfterDiscountAmount", divider: true },
         { text: "Action", value: "remove" }
       ];
     },
@@ -498,11 +510,13 @@ export default {
         this.$store
           .dispatch(AT.SUBMIT_BILL, postData)
           .then(res => {
+            this.invoicePostData = res;
             this.$store.dispatch(AT.SNACKBAR, {
               text: "Bill creation successful"
             });
             this.resetForm();
             // show bill
+            this.showPreviewBill = true;
           })
           .catch(err => {
             this.$store.dispatch(AT.SNACKBAR, {
@@ -545,6 +559,12 @@ export default {
       requestAnimationFrame(() => {
         this.$refs.itemDetails.reset();
       });
+    },
+    billModalActionHandler(data) {
+      if (!data) {
+        // close modal
+        this.showPreviewBill = false;
+      }
     }
   }
 };

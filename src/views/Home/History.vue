@@ -34,7 +34,7 @@
             </span>
           </template>
           <template v-slot:item.print="{ item }">
-            <v-btn x-small fab icon>
+            <v-btn x-small fab icon @click="previewData(item)">
               <v-icon color="primary">
                 fas fa-print
               </v-icon>
@@ -61,18 +61,31 @@
         </v-data-table>
       </v-card-text>
     </v-card>
+    <BillModal
+      v-if="showPreviewBill"
+      :data="invoiceData"
+      :title="'Title'"
+      :loading="false"
+      @bill-modal="billModalActionHandler"
+    />
   </div>
 </template>
 <script>
 import Utils from "@/utils/Utils";
-
+import BillModal from "@/components/BillModal";
 export default {
   name: "History",
+  components: {
+    BillModal
+  },
   data() {
     return {
       expanded: [],
       search: "",
-      type: "bills"
+      type: "bills",
+
+      showPreviewBill: false,
+      invoiceData: {}
     };
   },
   computed: {
@@ -138,6 +151,16 @@ export default {
     },
     resetExpanded() {
       this.expanded = [];
+    },
+    previewData(data) {
+      this.invoiceData = data;
+      this.showPreviewBill = true;
+    },
+    billModalActionHandler(data) {
+      if (!data) {
+        // close modal
+        this.showPreviewBill = false;
+      }
     }
   }
 };
