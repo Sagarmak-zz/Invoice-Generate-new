@@ -61,7 +61,13 @@
         </v-data-table>
       </v-card-text>
     </v-card>
-    <BillModal v-if="showPreviewBill" :data="invoiceData" :title="'Title'" :loading="false" />
+    <BillModal
+      v-if="showPreviewBill"
+      :data="invoiceData"
+      :title="'Title'"
+      :loading="false"
+      @bill-modal="billModalActionHandler"
+    />
   </div>
 </template>
 <script>
@@ -149,6 +155,12 @@ export default {
     previewData(data) {
       this.invoiceData = data;
       this.showPreviewBill = true;
+    },
+    billModalActionHandler(data) {
+      if (!data) {
+        // close modal
+        this.showPreviewBill = false;
+      }
     }
   }
 };

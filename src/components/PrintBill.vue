@@ -237,8 +237,9 @@ export default {
   text-align: left;
 }
 .template {
-  width: 21cm;
   font: -webkit-small-control;
+  padding-right: 1rem;
+
   .header {
     max-height: 6cm;
     padding: 1rem 1.5rem;

@@ -164,7 +164,7 @@
                 <TextField
                   v-model="discountRate"
                   :loading="isFormLoading"
-                  :rules="{ regex: /^\d*\.?\d*$/, min_value: 1, max_value: 100 }"
+                  :rules="{ regex: /^\d*\.?\d*$/, min_value: 0, max_value: 100 }"
                   class="ma-0 pa-0"
                   label="Discount Rate (%)"
                 />
@@ -277,7 +277,13 @@
         </v-card-actions>
       </v-card>
     </ValidationObserver>
-    <BillModal v-if="showPreviewBill" :data="invoicePostData" :title="'Title'" :loading="true" />
+    <BillModal
+      v-if="showPreviewBill"
+      :data="invoicePostData"
+      :title="'Title'"
+      :loading="false"
+      @bill-modal="billModalActionHandler"
+    />
   </div>
 </template>
 <script>
@@ -484,7 +490,7 @@ export default {
       const endYear = (+this.fiscalYear.startYear + 1).toString().slice(-2);
       const fiscalYear = `${startyear}-${endYear}`;
 
-      this.invoicePostData = {
+      const postData = {
         user_id: this.userDetails && this.userDetails.id,
         firm_id: this.currentCustomer && this.currentCustomer.id,
         invoice_no: this.invoiceNumber,
@@ -502,8 +508,9 @@ export default {
 
       if (this.tableDetails && this.tableDetails.length) {
         this.$store
-          .dispatch(AT.SUBMIT_BILL, this.invoicePostData)
+          .dispatch(AT.SUBMIT_BILL, postData)
           .then(res => {
+            this.invoicePostData = res;
             this.$store.dispatch(AT.SNACKBAR, {
               text: "Bill creation successful"
             });
@@ -552,6 +559,12 @@ export default {
       requestAnimationFrame(() => {
         this.$refs.itemDetails.reset();
       });
+    },
+    billModalActionHandler(data) {
+      if (!data) {
+        // close modal
+        this.showPreviewBill = false;
+      }
     }
   }
 };
