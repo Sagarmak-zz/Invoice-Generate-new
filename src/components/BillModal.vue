@@ -1,16 +1,17 @@
 <template>
   <div class="bill-modal">
-    <v-dialog v-model="dialog" width="214mm" persistent>
+    <v-dialog v-model="dialog" width="23cm" :loading="loading">
       <v-card>
         <v-card-title>
           <!-- Dialog title if a title prop found -->
-          <div class="headline">Title</div>
+          <div class="headline">{{ title }}</div>
+          <v-spacer></v-spacer>
+          <v-btn class="primary">Print</v-btn>
           <!-- Dialog title if a title slot provided -->
           <slot name="title" />
         </v-card-title>
         <v-card-text>
-          <PrintBill />
-          <!-- 297mm x 210mm -->
+          <PrintBill :data="data" />
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -24,11 +25,11 @@ export default {
     PrintBill
   },
   props: {
-    title: {
-      type: String,
-      default: ""
+    data: {
+      type: Object,
+      default: () => {}
     },
-    message: {
+    title: {
       type: String,
       default: ""
     },
