@@ -13,7 +13,7 @@
     "core-js": "^3.4.3",
     "date-fns": "^2.8.1",
     "html2pdf.js": "^0.9.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "vee-validate": "^3.2.1",
     "vue": "^2.6.10",
     "vue-chartjs": "^3.5.0",
